@@ -76,9 +76,8 @@ if __name__ == '__main__':
 	own_ip_address = "127.0.0.2"
 	if len(sys.argv) > 1:
 		master_ip_address = sys.argv[1]
+		if len(sys.argv) > 2:
+			own_ip_address = sys.argv[2]
+		worker = Worker(master_ip_address, own_ip_address)
 	else:
 		print "ERROR, must add the address of the master as an argument"
-		return
-	if len(sys.argv) > 2:
-		own_ip_address = sys.argv[2]
-	worker = Worker(master_ip_address, own_ip_address)

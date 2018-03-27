@@ -7,7 +7,7 @@ class Master:
 	def __init__(self, own_ip = "127.0.0.1"):
 		self.num_vertices = 0
 		self.network = Network(own_ip, None)
-		self.load_data(msg)
+		self.load_data()
 		self.incoming_messages = []
 		done = False
 		aggregation_results = None
@@ -54,7 +54,7 @@ class Master:
 		# This function should be overridden. Will be run once all rounds have completed.
 		print "No mechanism of outputting data provided"
 
-	def load_data(self, msg):
+	def load_data(self):
 		# Receive data from loader.py, balance vertices between machines, make sure they all receive vertices, then edges.
 		edge_index = 0
 		while True:
