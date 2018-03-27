@@ -18,7 +18,7 @@ class Loader:
 		vertex_sheet = sheets[0]
 		edge_sheet = sheets[1]
 		num_vertices = int(vertex_sheet.cell(0,0).value)
-		for row in range(1, num_vertices):
+		for row in range(1, num_vertices+1):
 			vertex_number = vertex_sheet.cell(row, 0).value
 			vertex_value = vertex_sheet.cell(row, 1).value
 			msg =  {"contents": "VERTEX",
@@ -27,7 +27,7 @@ class Loader:
         	self.master_sub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
 
     	num_edges = int(edge_sheet.cell(0,0).value)
-    	for row in range(1, num_edges):
+    	for row in range(1, num_edges+1):
     		source = edge_sheet.cell(row, 0).value
 			destination = edge_sheet.cell(row, 1).value
 			msg =  {"contents": "EDGE",

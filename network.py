@@ -32,6 +32,8 @@ class Network:
 		self.edge_map = {}
 		# Map that has ip's as keys, index of outgoing sockets as values
 		self.ip_map = {}
+		# Map that has vertex numbers as keys, ips of nodes as keys
+		self.vertex_number_to_ip = {}
 
 		# Index of edges to add next vertex to
 		self.index_of_next_vertex = 0
@@ -89,5 +91,6 @@ class Network:
 				"vertex_number", vertex_number,
 				"vertex_value", vertex_value}
 		cur_socket = self.edges[self.index_of_next_vertex]
+		self.vertex_number_to_ip[vertex_number] = self.add_edges[self.index_of_next_vertex]
 		cur_socket.send_string("%s %s" % ("master", json.dumps(msg, separators=(",",":"))))
 		self.index_of_next_vertex = (self.index_of_next_vertex+1) % len(self.edges)
