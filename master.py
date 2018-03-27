@@ -1,4 +1,5 @@
 import json
+import sys
 from network import Network
 
 class Master:
@@ -81,3 +82,9 @@ class Master:
 					self.network.send_to_worker(source, "master", destination_ip, "ADD_EDGE")
 				else:
 					print "ERROR, trying to load something without vertex or edge identifier"
+
+if __name__ == '__main__':
+	ip_address = "127.0.0.1"
+	if len(sys.argv) > 1:
+		ip_address = sys.argv[1]
+	master = Master(ip_address)
