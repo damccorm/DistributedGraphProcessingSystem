@@ -11,7 +11,7 @@ class Loader:
 		#	The first cell should contain the number of edges.
 		self.context = zmq.Context()
 		self.pub_socket = self.context.socket(zmq.PUB)
-    	self.pub_socket.bind("tcp://"+master_ip+":5555")
+    	        self.pub_socket.bind("tcp://"+master_ip+":5555")
 
 		wb = open_workbook(excel_file_location)
 		sheets = wb.sheets()
@@ -24,16 +24,16 @@ class Loader:
 			msg =  {"contents": "VERTEX",
 			   		"vertex_number": vertex_number,
 			   		"vertex_value": vertex_value}
-        	self.master_sub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
+        	        self.master_sub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
 
-    	num_edges = int(edge_sheet.cell(0,0).value)
-    	for row in range(1, num_edges+1):
-    		source = edge_sheet.cell(row, 0).value
-			destination = edge_sheet.cell(row, 1).value
-			msg =  {"contents": "EDGE",
-			   		"source": source,
-			   		"destination": destination}
-        	self.master_sub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
+    	        num_edges = int(edge_sheet.cell(0,0).value)
+    	        for row in range(1, num_edges+1):
+    		        source = edge_sheet.cell(row, 0).value
+		        destination = edge_sheet.cell(row, 1).value
+		        msg =  {"contents": "EDGE",
+	       	   		"source": source,
+       		   		"destination": destination}
+        	        self.master_sub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
 
-        msg = {"contents": "DONE"}
-		self.master_sub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
+                msg = {"contents": "DONE"}
+	        self.master_sub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
