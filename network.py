@@ -16,8 +16,8 @@ class Network:
 		self.master_pub_socket = None
 		if master_ip is not None:
 			self.is_master = False
-			self.master_pub_socket = self.context.socket(zmq.SUB)
-			self.master_pub_socket.bind("tcp://"+master_ip+":5555")
+			self.master_pub_socket = self.context.socket(zmq.PUB)
+			self.master_pub_socket.bind("tcp://" + master_ip + ":5555")
 			self.master_sub_socket = self.context.socket(zmq.SUB)
 			self.master_sub_socket.bind("tcp://"+master_ip+":5556")
 			self.master_sub_socket.setsockopt_string(zmq.SUBSCRIBE, "master".decode("ascii"))
@@ -50,7 +50,7 @@ class Network:
 			print "ERROR, tried to wait for master from master"
 			return
 		msg =  {"message_type": message_type, "contents": message_contents, "vertex_number": vertex_number}
-		self.master_sub_socket.send_string("%s %s" % ("worker", json.dumps(msg, separators=(",",":"))))
+		self.master_pub_socket.send_string("%s %s" % ("worker", json.dumps(msg, separators=(",",":"))))
 
         def add_edge(self, outgoing_vertex, outgoing_ip):
         	if outgoing_ip not in self.ip_map:
