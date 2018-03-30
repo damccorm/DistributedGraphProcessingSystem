@@ -24,6 +24,7 @@ class Loader:
 			vertex_value = vertex_sheet.cell(row, 1).value
 			msg =  {"contents": "VERTEX", "vertex_number": vertex_number, "vertex_value": vertex_value}
 			self.pub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
+		
 		num_edges = int(edge_sheet.cell(0,0).value)
 		for row in range(1, num_edges+1):
 			source = edge_sheet.cell(row, 0).value
