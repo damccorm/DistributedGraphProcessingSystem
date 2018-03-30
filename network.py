@@ -2,9 +2,9 @@ import json
 import zmq
 
 class Network:
-
+        context = zmq.Context()
+        
 	def __init__(self, ip_address, master_ip):
-		self.context = zmq.Context()
 		# Socket to receive all communications not from the master
 		self.not_master_sub_socket = self.context.socket(zmq.SUB)
 		self.not_master_sub_socket.bind("tcp://"+ip_address+":5555")
@@ -17,7 +17,7 @@ class Network:
 		if master_ip is not None:
 			self.is_master = False
 			self.master_pub_socket = self.context.socket(zmq.PUB)
-			self.master_pub_socket.bind("tcp://" + master_ip + ":5555")
+			self.master_pub_socket.connect("tcp://" + master_ip + ":5555")
 			self.master_sub_socket = self.context.socket(zmq.SUB)
 			self.master_sub_socket.bind("tcp://"+master_ip+":5556")
 			self.master_sub_socket.setsockopt_string(zmq.SUBSCRIBE, "master".decode("ascii"))
@@ -56,9 +56,9 @@ class Network:
         	if outgoing_ip not in self.ip_map:
         		pub_socket = self.context.socket(zmq.PUB)
         		if self.is_master:
-        			pub_socket.bind("tcp://"+outgoing_ip+":5556")
+        			pub_socket.connect("tcp://"+outgoing_ip+":5556")
         		else:
-        			pub_socket.bind("tcp://"+outgoing_ip+":5555")
+        			pub_socket.connect("tcp://"+outgoing_ip+":5555")
     			self.edges.append(pub_socket)
     			self.ip_map[outgoing_ip] = len(self.edges) - 1
 			if outgoing_vertex is not None and outgoing_vertex not in self.edge_map:
