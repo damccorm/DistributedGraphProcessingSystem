@@ -1,9 +1,10 @@
 import json
+import sys
 import zmq
 from xlrd import open_workbook
 
 class Loader:
-	def __init__(self, master_ip, excel_file_location):
+	def __init__(self, master_ip, excel_file_name):
 		# Reads in vertices from an excel file. 
 		# Assumes vertices have the following form in sheet 1: vertex number, vertex value.
 		#	The first cell should contain the number of vertices.
@@ -11,9 +12,13 @@ class Loader:
 		#	The first cell should contain the number of edges.
 		self.context = zmq.Context()
 		self.pub_socket = self.context.socket(zmq.PUB)
-		self.pub_socket.bind("tcp://"+master_ip+":5555")
+		self.pub_socket.connect("tcp://"+master_ip+":5555")
 
-		wb = open_workbook(excel_file_location)
+		try:
+			wb = open_workbook(excel_file_name)
+		except:
+			print "ERROR: excel file must be in same directory as loader"
+			return
 		sheets = wb.sheets()
 		vertex_sheet = sheets[0]
 		edge_sheet = sheets[1]
@@ -31,3 +36,11 @@ class Loader:
 			self.master_sub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
 		msg = {"contents": "DONE"}
 		self.master_sub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
+
+if __name__ == '__main__':
+	if len(sys.argv) > 2:
+		master_ip_address = sys.argv[1]
+		excel_file_name = sys.argv[2]
+		worker = Worker(master_ip_address, own_ip_address)
+	else:
+		print "ERROR, must add the address of the master and name of excel file as arguments"
