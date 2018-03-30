@@ -14,11 +14,7 @@ class Loader:
 		self.pub_socket = self.context.socket(zmq.PUB)
 		self.pub_socket.connect("tcp://"+master_ip+":5555")
 
-		try:
-			wb = open_workbook(excel_file_name)
-		except:
-			print "ERROR: excel file must be in same directory as loader"
-			return
+		wb = open_workbook(excel_file_name)
 		sheets = wb.sheets()
 		vertex_sheet = sheets[0]
 		edge_sheet = sheets[1]
@@ -27,7 +23,7 @@ class Loader:
 			vertex_number = vertex_sheet.cell(row, 0).value
 			vertex_value = vertex_sheet.cell(row, 1).value
 			msg =  {"contents": "VERTEX", "vertex_number": vertex_number, "vertex_value": vertex_value}
-			self.master_sub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
+			self.pub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
 			num_edges = int(edge_sheet.cell(0,0).value)
 			for row in range(1, num_edges+1):
 				source = edge_sheet.cell(row, 0).value
@@ -41,6 +37,6 @@ if __name__ == '__main__':
 	if len(sys.argv) > 2:
 		master_ip_address = sys.argv[1]
 		excel_file_name = sys.argv[2]
-		worker = Worker(master_ip_address, own_ip_address)
+		loader = Loader(master_ip_address, excel_file_name)
 	else:
 		print "ERROR, must add the address of the master and name of excel file as arguments"
