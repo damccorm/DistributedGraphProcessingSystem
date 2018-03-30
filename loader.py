@@ -30,9 +30,9 @@ class Loader:
 			source = edge_sheet.cell(row, 0).value
 			destination = edge_sheet.cell(row, 1).value
 			msg =  {"contents": "EDGE", "source": source, "destination": destination}
-			self.master_sub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
+			self.pub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
 		msg = {"contents": "DONE"}
-		self.master_sub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
+		self.pub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
 
 if __name__ == '__main__':
 	if len(sys.argv) > 2:
