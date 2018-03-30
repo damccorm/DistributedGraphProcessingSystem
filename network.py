@@ -19,7 +19,7 @@ class Network:
 			self.master_pub_socket = self.context.socket(zmq.PUB)
 			self.master_pub_socket.connect("tcp://" + master_ip + ":5555")
 			self.master_sub_socket = self.context.socket(zmq.SUB)
-			self.master_sub_socket.bind("tcp://"+master_ip+":5556")
+			self.master_sub_socket.bind("tcp://"+ip_address+":5556")
 			self.master_sub_socket.setsockopt_string(zmq.SUBSCRIBE, "master".decode("ascii"))
 		else:
 			# Make sure that master can listen for loading message as well as messages from workers
