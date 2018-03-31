@@ -87,8 +87,12 @@ class Network:
 		return received_string
 
 	def broadcast(self, sending_vertex, message_contents, message_type):
-		for vertex in self.edge_map.keys():
-			self.send_to_worker(vertex, sending_vertex, message_contents, message_type)
+		msg =  {"message_type": message_type,
+				"sending_vertex": sending_vertex,
+				"contents": message_contents}
+		for socket in self.edges:
+			socket.send_string("%s %s" % (sending_vertex, json.dumps(msg, separators=(",",":"))))
+
 
 	def add_vertex_to_node(self, vertex_number, vertex_value):
                 print self.index_of_next_vertex, self.edges
