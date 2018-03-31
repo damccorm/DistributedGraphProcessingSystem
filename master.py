@@ -1,6 +1,6 @@
 import json
 import sys
-from network import Network
+from network import Network, Message
 
 class Master:
 
@@ -15,6 +15,7 @@ class Master:
 			self.start_round(aggregation_results)
 			if self.wait_for_round():
 				aggregation_results = self.aggregate()
+				print "Aggregation Results:", aggregation_results
 			else:
 				done = True
 		self.output_data()
@@ -39,7 +40,7 @@ class Master:
 				if message_type == "ACTIVE" or message_type == "INACTIVE":
 					if message_type == "ACTIVE":
 						is_vertex_active = True
-					self.incoming_messages.append(msg)
+					self.incoming_messages.append(Message(msg["vertex_number"], msg["contents"]))
 				num_responses += 1
 		return is_vertex_active
 
@@ -49,8 +50,12 @@ class Master:
 	def aggregate(self):
 		# This function should be overridden. 
 		# Will be run at end of every round except for last to aggregate data.
-		print "No aggregation function provided"
-		return
+		messages = self.get_incoming_messages()
+		cur_min = 1000000
+		for message in messages:
+			if int(message.contents) < cur_min:
+				cur_min = int(message.contents)
+		return cur_min
 
 	def output_data(self):
 		# This function should be overridden. Will be run once all rounds have completed.

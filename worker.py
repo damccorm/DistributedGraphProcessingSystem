@@ -1,56 +1,65 @@
 import json
 import sys
 import zmq
-from network import Network
-
-class Message:
-	def __init__(self, sending_vertex, contents):
-		self.sending_vertex = sending_vertex
-		self.contents = contents
-
+from network import Network, Message
 class Vertex:
+	# Class that contains all the info about an individual vertex
 	def __init__(self, vertex_number, vertex_value):
 		self.vertex_number = vertex_number
 		self.vertex_value = vertex_value
 		self.active = True
 		# Maps round number messages were received as key to list of messages as value
 		self.incoming_messages = {}
+		# Outgoing edges contains the vertices this vertex has edges to.
 		self.outgoing_edges = []
 
 class Worker:
 	def __init__(self, master_ip = "127.0.0.1", own_ip = "127.0.0.2"):
+		# Initialize worker, wait for master to give instructoins
 		self.round_number = 0
 		self.network = Network(own_ip, master_ip)
 		self.network.send_to_master(None, own_ip, None)
 		self.vertices = {}
 
-		# Repeatedly perform rounds
 		while True:
-			received_string = self.network.wait_for_master()
-			topic, mjson = received_string.split()
-			msg = json.loads(mjson)
+			self.listen_to_master()
+			
 
-			if msg["message_type"] == "start_round":
-				self.round_number += 1
-				print "Starting round", self.round_number
-				aggregation_results = msg["contents"]
-				self.receive_incoming_messages()
-				for vertex_number in self.vertices:
-					vertex = self.vertices[vertex_number]
-					self.vertices[vertex_number] = self.perform_round(vertex, aggregation_results)
-			elif msg["message_type"] == "ADD_VERTEX":
-				self.vertices[msg["vertex_number"]] = Vertex(int(msg["vertex_number"]), msg["vertex_value"])
-				print "Adding vertex", msg["vertex_number"], "with value", msg["vertex_value"]
-			elif msg["message_type"] == "ADD_EDGE":
-				# NOTE: This works, but should probably rename stuff to clarify
-				source = msg["destination_vertex"]
-				destination = msg["sending_vertex"]
-				"Received add edge message from master, adding edge from", source, "to", destination
-				outgoing_ip = msg["contents"]
-				self.network.add_edge(destination, outgoing_ip)
-				self.vertices[source].outgoing_edges.append(destination)
+	def listen_to_master(self):
+		# Listen for messages from master
+		received_string = self.network.wait_for_master()
+		topic, mjson = received_string.split()
+		msg = json.loads(mjson)
+
+		if msg["message_type"] == "start_round":
+			# Start round
+			self.round_number += 1
+			print "Starting round", self.round_number
+			aggregation_results = msg["contents"]
+			self.receive_incoming_messages()
+			for vertex_number in self.vertices:
+				vertex = self.vertices[vertex_number]
+				self.vertices[vertex_number] = self.perform_round(vertex, aggregation_results)
+
+		elif msg["message_type"] == "ADD_VERTEX":
+			# Add a vertex to this machine
+			self.vertices[msg["vertex_number"]] = Vertex(int(msg["vertex_number"]), msg["vertex_value"])
+			print "Added vertex", msg["vertex_number"], "with value", msg["vertex_value"]
+
+		elif msg["message_type"] == "ADD_EDGE":
+			# Add an edge from a vertex on this machine to another vertex
+			source = msg["destination_vertex"]
+			destination = msg["sending_vertex"]
+			outgoing_ip = msg["contents"]
+			self.network.add_edge(destination, outgoing_ip)
+			self.vertices[source].outgoing_edges.append(destination)
+			print "Added edge from", source, "to", destination
+
+		elif msg["message_type"] == "DONE":
+			self.output_results()
 
 	def perform_round(self, vertex, input_value):
+		# Performs the round, returns appropriate result to master
 		vertex, message_for_master = self.compute(vertex, input_value)
 		active = "INACTIVE"
 		if vertex.active:
@@ -59,7 +68,13 @@ class Worker:
 		print "Vertex", vertex.vertex_number, "done with round, is", active, "returned value", message_for_master
 		return vertex
 
+	def output_results():
+		# Output results at end of algorithm
+		print "Results go here"
+
+
 	def receive_incoming_messages(self):
+		# Receives all incoming messages from workers, parses them into Message objects, and sorts them to the appropriate vertex.
 		while True:
 			try:
 				received_string = self.network.wait_for_worker()
@@ -78,12 +93,16 @@ class Worker:
 			else:
 				vertex.incoming_messages[int(round_number_sent_in)] = [message]
 
-	def get_incoming_messages(vertex):
+	def get_incoming_messages(self, vertex):
+		# Returns all incoming messages for that vertex for the round
 		return vertex.incoming_messages[self.round_number]
 
 	def compute(self, vertex, input_value):
 		# To be overridden
-		value_to_aggregate = None
+		value_to_aggregate = vertex.vertex_number
+		if input_value is not None and vertex.vertex_number == input_value:
+			vertex.active = False
+			value_to_aggregate = None
 		return vertex, value_to_aggregate
 
 if __name__ == '__main__':
