@@ -9,6 +9,7 @@ class Master:
 		self.network = Network(own_ip, None)
 		self.load_data()
 		self.incoming_messages = []
+		self.round_number = 0
 		done = False
 		aggregation_results = None
 		while not done:
@@ -22,8 +23,9 @@ class Master:
 
 	def start_round(self, aggregation_results):
 		# Start each round
+		self.round_number += 1
 		self.incoming_messages = []
-		print "Starting round"
+		print "Starting round", self.round_number
 		self.network.broadcast("master", str(aggregation_results), "start_round")
 
 	def wait_for_round(self):
@@ -50,12 +52,13 @@ class Master:
 	def aggregate(self):
 		# This function should be overridden. 
 		# Will be run at end of every round except for last to aggregate data.
+		# Returns the largest value
 		messages = self.get_incoming_messages()
-		cur_min = 1000000
+		cur_max = 0
 		for message in messages:
-			if message.contents is not None and int(message.contents) < cur_min:
-				cur_min = int(message.contents)
-		return cur_min
+			if message.contents is not None and int(message.contents) > cur_max:
+				cur_max = int(message.contents)
+		return cur_max
 
 	def output_data(self):
 		# This function should be overridden. Will be run once all rounds have completed.
