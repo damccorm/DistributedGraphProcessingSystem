@@ -97,7 +97,9 @@ class Worker:
 
 	def get_incoming_messages(self, vertex):
 		# Returns all incoming messages for that vertex for the round
-		return vertex.incoming_messages[self.round_number]
+                if self.round_number in vertex.incoming_messages:
+		        return vertex.incoming_messages[self.round_number]
+                return []
 
 	def send_message_to_vertex(self, sending_vertex, receiving_vertex_number, contents):
 		self.network.send_to_worker(receiving_vertex_number, sending_vertex.vertex_number, contents, self.round_number)
@@ -114,11 +116,13 @@ class Worker:
 			incoming_messages = self.get_incoming_messages(vertex)
 			min_val = int(vertex.vertex_value)
 			for message in incoming_messages:
+                                print "Received value", message.contents
 				if int(message.contents) < min_val:
 					min_val = int(message.contents)
 			vertex.vertex_value = min_val
 			for v in vertex.outgoing_edges:
 				self.send_message_to_vertex(vertex, v, vertex.vertex_value)
+                        value_to_aggregate = vertex.vertex_value
 		else:
 			value_to_aggregate = None
 		return vertex, value_to_aggregate
