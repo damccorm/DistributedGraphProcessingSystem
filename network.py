@@ -95,4 +95,5 @@ class Network:
 		cur_socket = self.edges[self.index_of_next_vertex]
 		self.vertex_number_to_ip[vertex_number] = self.edges[self.index_of_next_vertex]
 		cur_socket.send_string("%s %s" % ("master", json.dumps(msg, separators=(",",":"))))
+                self.edge_map[vertex_number] = self.index_of_next_vertex
 		self.index_of_next_vertex = (self.index_of_next_vertex+1) % len(self.edges)
