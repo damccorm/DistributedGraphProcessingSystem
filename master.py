@@ -40,6 +40,7 @@ class Master:
 					if message_type == "ACTIVE":
 						is_vertex_active = True
 					self.incoming_messages.append(msg)
+				num_responses += 1
 		return is_vertex_active
 
 	def get_incoming_messages(self):
