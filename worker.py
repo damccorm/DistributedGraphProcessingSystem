@@ -41,9 +41,9 @@ class Worker:
 				self.vertices[msg["vertex_number"]] = Vertex(int(msg["vertex_number"]), msg["vertex_value"])
 				print "Adding vertex", msg["vertex_number"], "with value", msg["vertex_value"]
 			elif msg["message_type"] == "ADD_EDGE":
-				# TODO: This doesn't provide enough info to actually know where edge is going to.
-				source = msg["sending_vertex"]
-				destination = msg["destination_vertex"]
+				# NOTE: This works, but should probably rename stuff to clarify
+				source = msg["destination_vertex"]
+				destination = msg["sending_vertex"]
 				"Received add edge message from master, adding edge from", source, "to", destination
 				outgoing_ip = msg["contents"]
 				self.network.add_edge(destination, outgoing_ip)
