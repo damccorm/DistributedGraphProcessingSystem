@@ -28,13 +28,14 @@ class Network:
 
     	# List to contain sockets for all outgoing edges
 		self.edges = []
+		# List to contain ips for all outgoing edges. Each ip corresponds to the socket at the same index
+		self.ips = []
 		# Map that has vertex numbers as keys, index of outgoing sockets as values
 		self.edge_map = {}
 		# Map that has ip's as keys, index of outgoing sockets as values
 		self.ip_map = {}
 		# Map that has vertex numbers as keys, ips of nodes as keys
 		self.vertex_number_to_ip = {}
-
 		# Index of edges to add next vertex to
 		self.index_of_next_vertex = 0
 
@@ -64,6 +65,7 @@ class Network:
 			else:
 				pub_socket.connect("tcp://"+outgoing_ip+":5555")
 			self.edges.append(pub_socket)
+			self.ips.append(outgoing_ip)
 			self.ip_map[outgoing_ip] = len(self.edges) - 1
 		if outgoing_vertex is not None and outgoing_vertex not in self.edge_map:
 			self.edge_map[outgoing_vertex] = self.ip_map[outgoing_ip]
@@ -93,7 +95,7 @@ class Network:
 				"vertex_number": vertex_number,
 				"vertex_value": vertex_value}
 		cur_socket = self.edges[self.index_of_next_vertex]
-		self.vertex_number_to_ip[vertex_number] = self.edges[self.index_of_next_vertex]
+		self.vertex_number_to_ip[vertex_number] = self.ips[self.index_of_next_vertex]
 		cur_socket.send_string("%s %s" % ("master", json.dumps(msg, separators=(",",":"))))
                 self.edge_map[vertex_number] = self.index_of_next_vertex
 		self.index_of_next_vertex = (self.index_of_next_vertex+1) % len(self.edges)
