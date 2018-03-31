@@ -108,6 +108,7 @@ class Worker:
 		# If largest value in existence, lock that in and stop sharing messages, otherwise, give yourself the smallest value of yourself/your neighbors
 		# To be overridden
 		print "Master input value", input_value
+                print "Vertex", vertex.vertex_number, "has edges", vertex.outgoing_edges
 		value_to_aggregate = None
 		if input_value is not None and int(vertex.vertex_value) == int(input_value):
 			# If this vertex has the smallest input value in existence (for active vertices), mark it as inactive
@@ -122,6 +123,7 @@ class Worker:
 			vertex.vertex_value = min_val
 			for v in vertex.outgoing_edges:
 				self.send_message_to_vertex(vertex, v, vertex.vertex_value)
+                                print "Sent message to vertex", v
                         value_to_aggregate = vertex.vertex_value
 		else:
 			value_to_aggregate = None
