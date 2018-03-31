@@ -10,6 +10,7 @@ class Network:
 		self.not_master_sub_socket = self.context.socket(zmq.SUB)
 		self.not_master_sub_socket.bind("tcp://"+ip_address+":5555")
 		self.not_master_sub_socket.setsockopt_string(zmq.SUBSCRIBE, "worker".decode("ascii"))
+		self.not_master_sub_socket.setsockopt_string(ZMQ_RCVTIMEO, 3)
 		self.is_master = True
 
 		#Sockets to send/receive all communications from the master

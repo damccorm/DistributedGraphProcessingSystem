@@ -34,9 +34,10 @@ class Worker:
 				self.round_number += 1
 				print "Starting round", self.round_number
 				aggregation_results = msg["contents"]
+				self.receive_incoming_messages()
 				for vertex_number in self.vertices:
 					vertex = self.vertices[vertex_number]
-					self.vertices[vertex_number] = self.perform_round(vertex, input_value)
+					self.vertices[vertex_number] = self.perform_round(vertex, aggregation_results)
 			elif msg["message_type"] == "ADD_VERTEX":
 				self.vertices[msg["vertex_number"]] = Vertex(int(msg["vertex_number"]), msg["vertex_value"])
 				print "Adding vertex", msg["vertex_number"], "with value", msg["vertex_value"]
@@ -50,7 +51,6 @@ class Worker:
 				self.vertices[source].outgoing_edges.append(destination)
 
 	def perform_round(self, vertex, input_value):
-		self.receive_incoming_messages()
 		vertex, message_for_master = self.compute(vertex, input_value)
 		active = "INACTIVE"
 		if vertex.active:
@@ -61,8 +61,10 @@ class Worker:
 
 	def receive_incoming_messages(self):
 		while True:
-			# TODO: Add timeout to make sure this doesn't loop forever.
-			received_string = self.network.wait_for_worker()
+			try:
+				received_string = self.network.wait_for_worker()
+			except:
+				return
 			topic, mjson = received_string.split()
 			msg = json.loads(mjson)
 			round_number_sent_in = msg["message_type"]
