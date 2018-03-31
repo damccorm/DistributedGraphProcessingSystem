@@ -82,7 +82,7 @@ class Master:
 					destination = msg["destination"]
 					print "adding edge from", source, "to", destination
 					destination_ip = self.network.vertex_number_to_ip[destination]
-					self.network.send_to_worker(source, "master", destination_ip, "ADD_EDGE")
+					self.network.send_to_worker(destination, source, destination_ip, "ADD_EDGE")
 				else:
 					print "ERROR, trying to load something without vertex or edge identifier"
 
