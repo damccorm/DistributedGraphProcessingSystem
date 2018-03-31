@@ -99,9 +99,11 @@ class Worker:
 
 	def compute(self, vertex, input_value):
 		# To be overridden
+                print "Input value", input_value
 		value_to_aggregate = vertex.vertex_number
-		if input_value is not None and vertex.vertex_number == input_value:
+		if input_value is not None and input_value != "None" and int(vertex.vertex_number) == int(input_value):
 			vertex.active = False
+                if not vertex.active:
 			value_to_aggregate = None
 		return vertex, value_to_aggregate
 

@@ -53,7 +53,7 @@ class Master:
 		messages = self.get_incoming_messages()
 		cur_min = 1000000
 		for message in messages:
-			if int(message.contents) < cur_min:
+			if message.contents is not None and int(message.contents) < cur_min:
 				cur_min = int(message.contents)
 		return cur_min
 
