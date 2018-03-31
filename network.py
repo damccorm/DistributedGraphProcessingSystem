@@ -56,17 +56,17 @@ class Network:
 		msg =  {"message_type": message_type, "contents": message_contents, "vertex_number": vertex_number}
 		self.master_pub_socket.send_string("%s %s" % ("worker", json.dumps(msg, separators=(",",":"))))
 
-        def add_edge(self, outgoing_vertex, outgoing_ip):
-        	if outgoing_ip not in self.ip_map:
-        		pub_socket = self.context.socket(zmq.PUB)
-        		if self.is_master:
-        			pub_socket.connect("tcp://"+outgoing_ip+":5556")
-        		else:
-        			pub_socket.connect("tcp://"+outgoing_ip+":5555")
-    			self.edges.append(pub_socket)
-    			self.ip_map[outgoing_ip] = len(self.edges) - 1
-			if outgoing_vertex is not None and outgoing_vertex not in self.edge_map:
-				self.edge_map[outgoing_vertex] = self.ip_map[outgoing_ip]
+	def add_edge(self, outgoing_vertex, outgoing_ip):
+		if outgoing_ip not in self.ip_map:
+			pub_socket = self.context.socket(zmq.PUB)
+			if self.is_master:
+				pub_socket.connect("tcp://"+outgoing_ip+":5556")
+			else:
+				pub_socket.connect("tcp://"+outgoing_ip+":5555")
+			self.edges.append(pub_socket)
+			self.ip_map[outgoing_ip] = len(self.edges) - 1
+		if outgoing_vertex is not None and outgoing_vertex not in self.edge_map:
+			self.edge_map[outgoing_vertex] = self.ip_map[outgoing_ip]
 
 	def send_to_worker(self, receiving_vertex, sending_vertex, message_contents, message_type):
 		msg =  {"message_type": message_type,

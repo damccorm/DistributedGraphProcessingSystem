@@ -4,9 +4,10 @@ import zmq
 from network import Network
 
 class Message:
-	def __init__(self, sending_vertex, contents):
+	def __init__(self, sending_vertex, contents, receiving_vertex = None):
 		self.sending_vertex = sending_vertex
 		self.contents = contents
+		self.receiving_vertex = receiving_vertex
 
 class Vertex:
 	def __init__(self, vertex_number, vertex_value):
@@ -22,19 +23,26 @@ class Worker:
 		self.network = Network(own_ip, master_ip)
 		self.network.send_to_master(None, own_ip, None)
 		self.vertices = {}
+
+		# Repeatedly perform rounds
 		while True:
 			received_string = self.network.wait_for_master()
 			topic, mjson = received_string.split()
 			msg = json.loads(mjson)
+
 			if msg["message_type"] == "start_round":
 				self.round_number += 1
+				print "Starting round", self.round_number
 				aggregation_results = msg["contents"]
 				for vertex_number in self.vertices:
 					vertex = self.vertices[vertex_number]
 					self.vertices[vertex_number] = self.perform_round(vertex, input_value)
 			elif msg["message_type"] == "ADD_VERTEX":
 				self.vertices[msg["vertex_number"]] = Vertex(int(msg["vertex_number"]), msg["vertex_value"])
+				print "Adding vertex", msg["vertex_number"], "with value", msg["vertex_value"]
 			elif msg["message_type"] == "ADD_EDGE":
+				# TODO: This doesn't provide enough info to actually know where edge is going to.
+				"Received add edge message from master, adding edge to", vertex, "NOTE: This still doesn't work"
 				vertex = msg["destination_vertex"]
 				outgoing_ip = msg["contents"]
 				self.network.add_edge(vertex, outgoing_ip)
@@ -46,6 +54,7 @@ class Worker:
 		if vertex.active:
 			active = "ACTIVE"
 		self.network.send_to_master(active, message_for_master, vertex.vertex_number)
+		print "Vertex", vertex.vertex_number, "done with round, is", active, "returned value", message_for_master
 		return vertex
 
 	def receive_incoming_messages(self):

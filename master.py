@@ -22,6 +22,7 @@ class Master:
 	def start_round(self, aggregation_results):
 		# Start each round
 		self.incoming_messages = []
+		print "Starting round"
 		self.network.broadcast("master", str(aggregation_results), "start_round")
 
 	def wait_for_round(self):
@@ -62,23 +63,24 @@ class Master:
 			topic, mjson = received_string.split()
 			msg = json.loads(mjson)
 			if topic == "worker":
-                                print msg
 				worker_ip = msg["contents"]
+				print "Adding edge to worker with ip", worker_ip
 				self.network.add_edge(None, worker_ip)
 			if topic == "loader":
 				contents = msg["contents"]
 				if contents == "DONE":
+					print "Received DONE message from loader"
 					return
 				elif contents == "VERTEX":
-					print "adding vertex"
 					vertex_number = msg["vertex_number"]
 					vertex_value = msg["vertex_value"]
+					print "adding vertex", vertex_number, "with value", vertex_value
 					self.network.add_vertex_to_node(vertex_number, vertex_value)
 					self.num_vertices += 1
 				elif contents == "EDGE":
-					print "adding edge"
 					source = msg["source"]
 					destination = msg["destination"]
+					print "adding edge from", source, "to", destination
 					destination_ip = self.network.vertex_number_to_ip[destination]
 					self.network.send_to_worker(source, "master", destination_ip, "ADD_EDGE")
 				else:

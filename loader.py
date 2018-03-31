@@ -18,21 +18,30 @@ class Loader:
 		sheets = wb.sheets()
 		vertex_sheet = sheets[0]
 		edge_sheet = sheets[1]
+
+		# Send vertics to master who will distribute them
 		num_vertices = int(vertex_sheet.cell(0,0).value)
 		for row in range(1, num_vertices+1):
 			vertex_number = vertex_sheet.cell(row, 0).value
 			vertex_value = vertex_sheet.cell(row, 1).value
 			msg =  {"contents": "VERTEX", "vertex_number": vertex_number, "vertex_value": vertex_value}
 			self.pub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
+			print "Sent vertex", vertex_number, "with value", vertex_value
 		
+		# Send edges to master who will send them to the appropriate vertices.
+		# Edges are assumed to be directed, can compensate by adding directed edges in both directions
 		num_edges = int(edge_sheet.cell(0,0).value)
 		for row in range(1, num_edges+1):
 			source = edge_sheet.cell(row, 0).value
 			destination = edge_sheet.cell(row, 1).value
 			msg =  {"contents": "EDGE", "source": source, "destination": destination}
+			print "Sent edge from", source, "to", destination
 			self.pub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
+
+		# Send done message to master who will start rounds
 		msg = {"contents": "DONE"}
 		self.pub_socket.send_string("%s %s" % ("loader", json.dumps(msg, separators=(",",":"))))
+		print "Sent the finished message"
 
 if __name__ == '__main__':
 	if len(sys.argv) > 2:
