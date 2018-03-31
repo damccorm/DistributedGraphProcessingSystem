@@ -4,10 +4,9 @@ import zmq
 from network import Network
 
 class Message:
-	def __init__(self, sending_vertex, contents, receiving_vertex = None):
+	def __init__(self, sending_vertex, contents):
 		self.sending_vertex = sending_vertex
 		self.contents = contents
-		self.receiving_vertex = receiving_vertex
 
 class Vertex:
 	def __init__(self, vertex_number, vertex_value):
@@ -16,6 +15,7 @@ class Vertex:
 		self.active = True
 		# Maps round number messages were received as key to list of messages as value
 		self.incoming_messages = {}
+		self.outgoing_edges = []
 
 class Worker:
 	def __init__(self, master_ip = "127.0.0.1", own_ip = "127.0.0.2"):
@@ -42,10 +42,12 @@ class Worker:
 				print "Adding vertex", msg["vertex_number"], "with value", msg["vertex_value"]
 			elif msg["message_type"] == "ADD_EDGE":
 				# TODO: This doesn't provide enough info to actually know where edge is going to.
-				"Received add edge message from master, adding edge to", vertex, "NOTE: This still doesn't work"
-				vertex = msg["destination_vertex"]
+				source = msg["sending_vertex"]
+				destination = msg["destination_vertex"]
+				"Received add edge message from master, adding edge from", source, "to", destination
 				outgoing_ip = msg["contents"]
-				self.network.add_edge(vertex, outgoing_ip)
+				self.network.add_edge(destination, outgoing_ip)
+				self.vertices[source].outgoing_edges.append(destination)
 
 	def perform_round(self, vertex, input_value):
 		self.receive_incoming_messages()
