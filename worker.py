@@ -44,7 +44,7 @@ class Worker:
 				# TODO: This doesn't provide enough info to actually know where edge is going to.
 				source = msg["sending_vertex"]
 				destination = msg["destination_vertex"]
-				"Received add edge message from master, adding edge from", source, "to", destination
+				print "Received add edge message from master, adding edge from", source, "to", destination
 				outgoing_ip = msg["contents"]
 				self.network.add_edge(destination, outgoing_ip)
 				self.vertices[source].outgoing_edges.append(destination)
