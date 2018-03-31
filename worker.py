@@ -1,5 +1,6 @@
 import json
 import sys
+import zmq
 from network import Network
 
 class Message:

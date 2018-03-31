@@ -62,6 +62,7 @@ class Master:
 			topic, mjson = received_string.split()
 			msg = json.loads(mjson)
 			if topic == "worker":
+                                print msg
 				worker_ip = msg["contents"]
 				self.network.add_edge(None, worker_ip)
 			if topic == "loader":

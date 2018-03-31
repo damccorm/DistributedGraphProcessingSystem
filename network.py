@@ -1,4 +1,5 @@
 import json
+import time
 import zmq
 
 class Network:
@@ -36,6 +37,9 @@ class Network:
 
 		# Index of edges to add next vertex to
 		self.index_of_next_vertex = 0
+
+                # Sleep to let sockets initialize
+                time.sleep(3)
 
 
         def wait_for_master(self):
@@ -84,10 +88,11 @@ class Network:
 			self.send_to_worker(vertex, sending_vertex, message_contents, message_type)
 
 	def add_vertex_to_node(self, vertex_number, vertex_value):
+                print self.index_of_next_vertex, self.edges
 		msg =  {"message_type": "ADD_VERTEX",
 				"vertex_number": vertex_number,
 				"vertex_value": vertex_value}
 		cur_socket = self.edges[self.index_of_next_vertex]
-		self.vertex_number_to_ip[vertex_number] = self.add_edges[self.index_of_next_vertex]
+		self.vertex_number_to_ip[vertex_number] = self.edges[self.index_of_next_vertex]
 		cur_socket.send_string("%s %s" % ("master", json.dumps(msg, separators=(",",":"))))
 		self.index_of_next_vertex = (self.index_of_next_vertex+1) % len(self.edges)
