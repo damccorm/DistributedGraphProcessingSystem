@@ -37,8 +37,10 @@ class Worker:
 		if msg["message_type"] == "start_round":
 			# Start round
 			self.round_number += 1
-			print "Starting round", self.round_number
 			aggregation_results = msg["contents"]
+			print "----------------------------------------------"
+			print "Starting round", self.round_number, "received", aggregation_results, "from master"
+			print "----------------------------------------------"
 			if aggregation_results is not None and aggregation_results == "None":
 				aggregation_results = None
 			self.receive_incoming_messages()
@@ -110,7 +112,8 @@ class Worker:
 def compute(vertex, input_value, self):
 	# If largest value in existence, lock that in and stop sharing messages, otherwise, give yourself the smallest value of yourself/your neighbors
 	# To be overridden
-	print "Master input value", input_value
+	print
+	print "VERTEX", vertex.vertex_value
 	value_to_aggregate = None
 	if input_value is not None and int(vertex.vertex_value) == int(input_value):
 		# If this vertex has the smallest input value in existence (for active vertices), mark it as inactive
@@ -118,7 +121,7 @@ def compute(vertex, input_value, self):
 	if vertex.active:
 		min_val = int(vertex.vertex_value)
 		for message in self.get_incoming_messages(vertex):
-			print "Received value", message.contents
+			print "Received value", message.contents, "from", message.contents
 			if int(message.contents) < min_val:
 				min_val = int(message.contents)
 		vertex.vertex_value = min_val
@@ -131,7 +134,7 @@ def compute(vertex, input_value, self):
 	return vertex, value_to_aggregate
 
 def output_function(vertex):
-	print "Vertex", vertex.vertex_number, "finished with value", vertex.vertex_value
+	print "Finished with value", vertex.vertex_value
 
 if __name__ == '__main__':
 	master_ip_address = None
