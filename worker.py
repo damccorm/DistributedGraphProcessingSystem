@@ -104,7 +104,8 @@ class Worker:
 		if self.round_number in vertex.incoming_messages:
 			return vertex.incoming_messages[self.round_number]
 		print "Vertex", vertex.vertex_number, "received no messages"
-        return []
+                print "Dictionary", vertex.incoming_messages
+                return []
 
 	def send_message_to_vertex(self, sending_vertex, receiving_vertex_number, contents):
 		self.network.send_to_worker(receiving_vertex_number, sending_vertex.vertex_number, contents, self.round_number)
@@ -114,7 +115,7 @@ def compute(vertex, input_value, self):
 	# If largest value in existence, lock that in and stop sharing messages, otherwise, give yourself the smallest value of yourself/your neighbors
 	# To be overridden
 	print
-	print "VERTEX", vertex.vertex_value
+	print "VERTEX", vertex.vertex_number
 	value_to_aggregate = None
 	if input_value is not None and int(vertex.vertex_value) == int(input_value):
 		# If this vertex has the smallest input value in existence (for active vertices), mark it as inactive
