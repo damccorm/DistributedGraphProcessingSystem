@@ -100,9 +100,9 @@ class Worker:
 				vertex.incoming_messages[int(round_number_sent_in)] = [message]
 
 	def get_incoming_messages(self, vertex):
-		# Returns all incoming messages for that vertex for the round
+		# Returns all incoming messages for that vertex sent in the previous round
 		if self.round_number in vertex.incoming_messages:
-			return vertex.incoming_messages[self.round_number]
+			return vertex.incoming_messages[self.round_number - 1]
 		print "Vertex", vertex.vertex_number, "received no messages"
                 print "Dictionary", vertex.incoming_messages
                 return []
