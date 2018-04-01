@@ -85,8 +85,6 @@ class Network:
 				"sending_vertex": sending_vertex,
 				"destination_vertex": receiving_vertex}
 		cur_socket = self.edges[self.edge_map[receiving_vertex]]
-                print "edges", self.edges
-                print "Edge map", self.edge_map
 		sender = "worker"
 		if self.is_master:
 			sender = "master"
@@ -108,7 +106,6 @@ class Network:
 
 	def add_vertex_to_node(self, vertex_number, vertex_value):
 		# Send a message to a worker telling them to add a vertex
-                print self.index_of_next_vertex, self.edges
 		msg =  {"message_type": "ADD_VERTEX",
 				"vertex_number": vertex_number,
 				"vertex_value": vertex_value}

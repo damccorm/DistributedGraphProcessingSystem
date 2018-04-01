@@ -103,9 +103,7 @@ class Worker:
 		# Returns all incoming messages for that vertex sent in the previous round
 		if (self.round_number-1) in vertex.incoming_messages:
 			return vertex.incoming_messages[self.round_number - 1]
-		print "Vertex", vertex.vertex_number, "received no messages"
-                print "Dictionary", vertex.incoming_messages
-                return []
+		return []
 
 	def send_message_to_vertex(self, sending_vertex, receiving_vertex_number, contents):
 		self.network.send_to_worker(receiving_vertex_number, sending_vertex.vertex_number, contents, self.round_number)
@@ -123,13 +121,11 @@ def compute(vertex, input_value, self):
 	if vertex.active:
 		min_val = int(vertex.vertex_value)
 		for message in self.get_incoming_messages(vertex):
-			print "Received value", message.contents, "from", message.contents
 			if int(message.contents) < min_val:
 				min_val = int(message.contents)
 		vertex.vertex_value = min_val
 		for v in vertex.outgoing_edges:
 			self.send_message_to_vertex(vertex, v, vertex.vertex_value)
-			print "Sent message to vertex", v, "with value", vertex.vertex_value
 		value_to_aggregate = vertex.vertex_value
 	else:
 		value_to_aggregate = None
