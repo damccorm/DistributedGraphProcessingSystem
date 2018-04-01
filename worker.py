@@ -127,7 +127,7 @@ def compute(vertex, input_value, self):
 		vertex.vertex_value = min_val
 		for v in vertex.outgoing_edges:
 			self.send_message_to_vertex(vertex, v, vertex.vertex_value)
-			print "Sent message to vertex", v
+			print "Sent message to vertex", v, "with value", vertex.vertex_value
 		value_to_aggregate = vertex.vertex_value
 	else:
 		value_to_aggregate = None
