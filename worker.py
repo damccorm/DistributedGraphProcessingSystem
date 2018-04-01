@@ -14,7 +14,7 @@ class Vertex:
 		self.outgoing_edges = []
 
 class Worker:
-	def __init__(self, master_ip = "127.0.0.1", own_ip = "127.0.0.2", compute_function, output_function):
+	def __init__(self, master_ip, own_ip, compute_function, output_function):
 		# Initialize worker, wait for master to give instructoins
 		self.round_number = 0
 		self.network = Network(own_ip, master_ip)
@@ -24,7 +24,7 @@ class Worker:
 		self.output_function = output_function
 
 		while True:
-			self.listen_to_master(compute_function)
+			self.listen_to_master()
 			
 
 	def listen_to_master(self):
@@ -65,7 +65,7 @@ class Worker:
 
 	def perform_round(self, vertex, input_value):
 		# Performs the round, returns appropriate result to master
-		vertex, message_for_master = self.compute_function(vertex, input_value)
+		vertex, message_for_master = self.compute_function(vertex, input_value,self)
 		active = "INACTIVE"
 		if vertex.active:
 			active = "ACTIVE"
@@ -103,7 +103,7 @@ class Worker:
 		self.network.send_to_worker(receiving_vertex_number, sending_vertex.vertex_number, contents, self.round_number)
 
 
-def compute(self, vertex, input_value):
+def compute(vertex, input_value, self):
 	# If largest value in existence, lock that in and stop sharing messages, otherwise, give yourself the smallest value of yourself/your neighbors
 	# To be overridden
 	print "Master input value", input_value
@@ -112,9 +112,8 @@ def compute(self, vertex, input_value):
 		# If this vertex has the smallest input value in existence (for active vertices), mark it as inactive
 		vertex.active = False
 	if vertex.active:
-		incoming_messages = self.get_incoming_messages(vertex)
 		min_val = int(vertex.vertex_value)
-		for message in incoming_messages:
+		for message in self.get_incoming_messages(vertex):
 			print "Received value", message.contents
 			if int(message.contents) < min_val:
 				min_val = int(message.contents)
@@ -127,7 +126,7 @@ def compute(self, vertex, input_value):
 		value_to_aggregate = None
 	return vertex, value_to_aggregate
 
-def output_function(self, vertex):
+def output_function(vertex):
 	print "Vertex", vertex.vertex_number, "finished with value", vertex.vertex_value
 
 if __name__ == '__main__':
@@ -137,6 +136,6 @@ if __name__ == '__main__':
 		master_ip_address = sys.argv[1]
 		if len(sys.argv) > 2:
 			own_ip_address = sys.argv[2]
-		worker = Worker(master_ip_address, own_ip_address, lambda vertex, input_value: compute(vertex, input_value), lambda vertex: output_function(vertex))
+		worker = Worker(master_ip_address, own_ip_address, lambda vertex, input_value, self: compute(vertex, input_value, self), lambda vertex: output_function(vertex))
 	else:
 		print "ERROR, must add the address of the master as an argument"
