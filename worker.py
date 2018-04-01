@@ -115,14 +115,14 @@ def compute(self, vertex, input_value):
 		incoming_messages = self.get_incoming_messages(vertex)
 		min_val = int(vertex.vertex_value)
 		for message in incoming_messages:
-                        print "Received value", message.contents
+			print "Received value", message.contents
 			if int(message.contents) < min_val:
 				min_val = int(message.contents)
 		vertex.vertex_value = min_val
 		for v in vertex.outgoing_edges:
 			self.send_message_to_vertex(vertex, v, vertex.vertex_value)
-                            print "Sent message to vertex", v
-                    value_to_aggregate = vertex.vertex_value
+			print "Sent message to vertex", v
+		value_to_aggregate = vertex.vertex_value
 	else:
 		value_to_aggregate = None
 	return vertex, value_to_aggregate
