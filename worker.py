@@ -14,15 +14,17 @@ class Vertex:
 		self.outgoing_edges = []
 
 class Worker:
-	def __init__(self, master_ip = "127.0.0.1", own_ip = "127.0.0.2"):
+	def __init__(self, master_ip = "127.0.0.1", own_ip = "127.0.0.2", compute_function, output_function):
 		# Initialize worker, wait for master to give instructoins
 		self.round_number = 0
 		self.network = Network(own_ip, master_ip)
 		self.network.send_to_master(None, own_ip, None)
 		self.vertices = {}
+		self.compute_function = compute_function
+		self.output_function = output_function
 
 		while True:
-			self.listen_to_master()
+			self.listen_to_master(compute_function)
 			
 
 	def listen_to_master(self):
@@ -58,22 +60,18 @@ class Worker:
 			print "Added edge from", source, "to", destination
 
 		elif msg["message_type"] == "DONE":
-			self.output_results()
+			for vertex in self.vertices.values():
+				self.output_function(vertex)
 
 	def perform_round(self, vertex, input_value):
 		# Performs the round, returns appropriate result to master
-		vertex, message_for_master = self.compute(vertex, input_value)
+		vertex, message_for_master = self.compute_function(vertex, input_value)
 		active = "INACTIVE"
 		if vertex.active:
 			active = "ACTIVE"
 		self.network.send_to_master(active, message_for_master, vertex.vertex_number)
 		print "Vertex", vertex.vertex_number, "done with round, is", active, "returned value", message_for_master
 		return vertex
-
-	def output_results():
-		# Output results at end of algorithm
-		print "Results go here"
-
 
 	def receive_incoming_messages(self):
 		# Receives all incoming messages from workers, parses them into Message objects, and sorts them to the appropriate vertex.
@@ -104,30 +102,34 @@ class Worker:
 	def send_message_to_vertex(self, sending_vertex, receiving_vertex_number, contents):
 		self.network.send_to_worker(receiving_vertex_number, sending_vertex.vertex_number, contents, self.round_number)
 
-	def compute(self, vertex, input_value):
-		# If largest value in existence, lock that in and stop sharing messages, otherwise, give yourself the smallest value of yourself/your neighbors
-		# To be overridden
-		print "Master input value", input_value
-                print "Vertex", vertex.vertex_number, "has edges", vertex.outgoing_edges
+
+def compute(self, vertex, input_value):
+	# If largest value in existence, lock that in and stop sharing messages, otherwise, give yourself the smallest value of yourself/your neighbors
+	# To be overridden
+	print "Master input value", input_value
+            print "Vertex", vertex.vertex_number, "has edges", vertex.outgoing_edges
+	value_to_aggregate = None
+	if input_value is not None and int(vertex.vertex_value) == int(input_value):
+		# If this vertex has the smallest input value in existence (for active vertices), mark it as inactive
+		vertex.active = False
+	if vertex.active:
+		incoming_messages = self.get_incoming_messages(vertex)
+		min_val = int(vertex.vertex_value)
+		for message in incoming_messages:
+                            print "Received value", message.contents
+			if int(message.contents) < min_val:
+				min_val = int(message.contents)
+		vertex.vertex_value = min_val
+		for v in vertex.outgoing_edges:
+			self.send_message_to_vertex(vertex, v, vertex.vertex_value)
+                            print "Sent message to vertex", v
+                    value_to_aggregate = vertex.vertex_value
+	else:
 		value_to_aggregate = None
-		if input_value is not None and int(vertex.vertex_value) == int(input_value):
-			# If this vertex has the smallest input value in existence (for active vertices), mark it as inactive
-			vertex.active = False
-		if vertex.active:
-			incoming_messages = self.get_incoming_messages(vertex)
-			min_val = int(vertex.vertex_value)
-			for message in incoming_messages:
-                                print "Received value", message.contents
-				if int(message.contents) < min_val:
-					min_val = int(message.contents)
-			vertex.vertex_value = min_val
-			for v in vertex.outgoing_edges:
-				self.send_message_to_vertex(vertex, v, vertex.vertex_value)
-                                print "Sent message to vertex", v
-                        value_to_aggregate = vertex.vertex_value
-		else:
-			value_to_aggregate = None
-		return vertex, value_to_aggregate
+	return vertex, value_to_aggregate
+
+def output_function(self, vertex):
+	print "Vertex", vertex.vertex_number, "finished with value", vertex.vertex_value
 
 if __name__ == '__main__':
 	master_ip_address = None
@@ -136,6 +138,6 @@ if __name__ == '__main__':
 		master_ip_address = sys.argv[1]
 		if len(sys.argv) > 2:
 			own_ip_address = sys.argv[2]
-		worker = Worker(master_ip_address, own_ip_address)
+		worker = Worker(master_ip_address, own_ip_address, lambda vertex, input_value: compute(vertex, input_value), lambda vertex: output_function(vertex))
 	else:
 		print "ERROR, must add the address of the master as an argument"
