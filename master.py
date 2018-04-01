@@ -4,7 +4,7 @@ from network import Network, Message
 
 class Master:
 
-	def __init__(self, own_ip = "127.0.0.1"):
+	def __init__(self, own_ip = "127.0.0.1", aggregator_function = None):
 		self.num_vertices = 0
 		self.network = Network(own_ip, None)
 		self.load_data()
@@ -15,10 +15,13 @@ class Master:
 		while not done:
 			self.start_round(aggregation_results)
 			if self.wait_for_round():
-				aggregation_results = self.aggregate()
-				print "Aggregation Results:", aggregation_results
+				if aggregator_function != None:
+					incoming_messages = self.get_incoming_messages()
+					aggregation_results = aggregator_function(incoming_messages)
+					print "Aggregation Results:", aggregation_results
 			else:
 				done = True
+		self.network.broadcast("master", None, "DONE")
 		self.output_data()
 
 	def start_round(self, aggregation_results):
@@ -48,17 +51,6 @@ class Master:
 
 	def get_incoming_messages(self):
 		return self.incoming_messages
-
-	def aggregate(self):
-		# This function should be overridden. 
-		# Will be run at end of every round except for last to aggregate data.
-		# Returns the largest value
-		messages = self.get_incoming_messages()
-		cur_max = 0
-		for message in messages:
-			if message.contents is not None and int(message.contents) > cur_max:
-				cur_max = int(message.contents)
-		return cur_max
 
 	def output_data(self):
 		# This function should be overridden. Will be run once all rounds have completed.
@@ -95,8 +87,15 @@ class Master:
 				else:
 					print "ERROR, trying to load something without vertex or edge identifier"
 
+def aggregate(incoming_messages):
+	cur_max = 0
+	for message in incoming_messages:
+		if message.contents is not None and int(message.contents) > cur_max:
+			cur_max = int(message.contents)
+	return cur_max
+
 if __name__ == '__main__':
 	ip_address = "127.0.0.1"
 	if len(sys.argv) > 1:
 		ip_address = sys.argv[1]
-	master = Master(ip_address)
+	master = Master(ip_address, lambda incoming_messages: aggregate(incoming_messages))

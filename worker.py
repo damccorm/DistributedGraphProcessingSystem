@@ -127,7 +127,7 @@ def compute(self, vertex, input_value):
 		value_to_aggregate = None
 	return vertex, value_to_aggregate
 
-def output_function(self, vertex):
+def output_function(vertex):
 	print "Vertex", vertex.vertex_number, "finished with value", vertex.vertex_value
 
 if __name__ == '__main__':
