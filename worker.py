@@ -23,9 +23,10 @@ class Worker:
 		self.compute_function = compute_function
 		self.output_function = output_function
 
-		while True:
-			self.listen_to_master()
-			
+		done = False
+		while not done:
+			done = self.listen_to_master()
+		
 
 	def listen_to_master(self):
 		# Listen for messages from master
@@ -62,6 +63,9 @@ class Worker:
 		elif msg["message_type"] == "DONE":
 			for vertex in self.vertices.values():
 				self.output_function(vertex)
+			return True
+
+		return False
 
 	def perform_round(self, vertex, input_value):
 		# Performs the round, returns appropriate result to master
