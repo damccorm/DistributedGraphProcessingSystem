@@ -85,6 +85,8 @@ class Network:
 				"sending_vertex": sending_vertex,
 				"destination_vertex": receiving_vertex}
 		cur_socket = self.edges[self.edge_map[receiving_vertex]]
+                print "edges", self.edges
+                print "Edge map", self.edge_map
 		sender = "worker"
 		if self.is_master:
 			sender = "master"
