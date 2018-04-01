@@ -107,7 +107,6 @@ def compute(self, vertex, input_value):
 	# If largest value in existence, lock that in and stop sharing messages, otherwise, give yourself the smallest value of yourself/your neighbors
 	# To be overridden
 	print "Master input value", input_value
-            print "Vertex", vertex.vertex_number, "has edges", vertex.outgoing_edges
 	value_to_aggregate = None
 	if input_value is not None and int(vertex.vertex_value) == int(input_value):
 		# If this vertex has the smallest input value in existence (for active vertices), mark it as inactive
@@ -116,7 +115,7 @@ def compute(self, vertex, input_value):
 		incoming_messages = self.get_incoming_messages(vertex)
 		min_val = int(vertex.vertex_value)
 		for message in incoming_messages:
-                            print "Received value", message.contents
+                        print "Received value", message.contents
 			if int(message.contents) < min_val:
 				min_val = int(message.contents)
 		vertex.vertex_value = min_val
