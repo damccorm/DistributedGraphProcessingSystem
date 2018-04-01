@@ -101,9 +101,10 @@ class Worker:
 
 	def get_incoming_messages(self, vertex):
 		# Returns all incoming messages for that vertex for the round
-                if self.round_number in vertex.incoming_messages:
-		        return vertex.incoming_messages[self.round_number]
-                return []
+		if self.round_number in vertex.incoming_messages:
+			return vertex.incoming_messages[self.round_number]
+		print "Vertex", vertex.vertex_number, "received no messages"
+        return []
 
 	def send_message_to_vertex(self, sending_vertex, receiving_vertex_number, contents):
 		self.network.send_to_worker(receiving_vertex_number, sending_vertex.vertex_number, contents, self.round_number)
@@ -134,7 +135,7 @@ def compute(vertex, input_value, self):
 	return vertex, value_to_aggregate
 
 def output_function(vertex):
-	print "Finished with value", vertex.vertex_value
+	print "Vertex", vertex.vertex_number, "finished with value", vertex.vertex_value
 
 if __name__ == '__main__':
 	master_ip_address = None
