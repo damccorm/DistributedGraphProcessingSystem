@@ -4,13 +4,19 @@ from network import Network, Message
 
 class Master:
 
-	def __init__(self, own_ip = "127.0.0.1", aggregator_function = None):
+	def __init__(self, own_ip, aggregator_function = None, output_function = None):
+		if aggregator_function is None:
+			print "No aggregator function supplied"
+		if output_function is None:
+			print "No output function supplied"
+
 		self.num_vertices = 0
 		self.network = Network(own_ip, None)
 		self.load_data()
 		self.incoming_messages = []
 		self.round_number = 0
 		done = False
+		incoming_messages = None
 		aggregation_results = None
 		while not done:
 			self.start_round(aggregation_results)
@@ -22,7 +28,8 @@ class Master:
 			else:
 				done = True
 		self.network.broadcast("master", None, "DONE")
-		self.output_data()
+		if output_function is not None:
+			output_function(incoming_messages)
 
 	def start_round(self, aggregation_results):
 		# Start each round
@@ -51,10 +58,6 @@ class Master:
 
 	def get_incoming_messages(self):
 		return self.incoming_messages
-
-	def output_data(self):
-		# This function should be overridden. Will be run once all rounds have completed.
-		print "No mechanism of outputting data provided"
 
 	def load_data(self):
 		# Receive data from loader.py, balance vertices between machines, make sure they all receive vertices, then edges.
