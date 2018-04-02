@@ -74,8 +74,7 @@ class Worker:
 
 	def perform_round(self, vertex, input_value):
 		# Performs the round, returns appropriate result to master
-		vertex.incoming_messages = self.get_incoming_messages(vertex)
-		vertex, message_for_master = self.compute_function(vertex, input_value, lambda vertex, v, value: self.send_message_to_vertex(vertex, v, value))
+		vertex, message_for_master = self.compute_function(vertex, input_value, self.get_incoming_messages(vertex), lambda vertex, v, value: self.send_message_to_vertex(vertex, v, value))
 		active = "INACTIVE"
 		if vertex.active:
 			active = "ACTIVE"
@@ -113,7 +112,7 @@ class Worker:
 		self.network.send_to_worker(receiving_vertex_number, sending_vertex.vertex_number, contents, self.round_number)
 
 
-def compute(vertex, input_value, send_message_to_vertex):
+def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
 	# If largest value in existence, lock that in and stop sharing messages, otherwise, give yourself the smallest value of yourself/your neighbors
 	# To be overridden
 	print
@@ -124,7 +123,7 @@ def compute(vertex, input_value, send_message_to_vertex):
 		vertex.active = False
 	if vertex.active:
 		min_val = int(vertex.vertex_value)
-		for message in vertex.incoming_messages:
+		for message in incoming_messages:
 			if int(message.contents) < min_val:
 				min_val = int(message.contents)
 		vertex.vertex_value = min_val
@@ -145,7 +144,7 @@ if __name__ == '__main__':
 		master_ip_address = sys.argv[1]
 		if len(sys.argv) > 2:
 			own_ip_address = sys.argv[2]
-		compute_lambda = lambda vertex, input_value, send_message_to_vertex: compute(vertex, input_value, send_message_to_vertex)
+		compute_lambda = lambda vertex, input_value, incoming_messages, send_message_to_vertex: compute(vertex, input_value, incoming_messages, send_message_to_vertex)
 		output_lambda = lambda vertex: output_function(vertex)
 		worker = Worker(master_ip_address, own_ip_address, compute_lambda, output_lambda)
 	else:
