@@ -28,7 +28,6 @@ class Worker:
 		done = False
 		while not done:
 			done = self.listen_to_master()
-		
 
 	def listen_to_master(self):
 		# Listen for messages from master
