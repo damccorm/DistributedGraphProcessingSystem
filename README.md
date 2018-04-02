@@ -1,4 +1,4 @@
-This repository contains the files for a distributed graph processing system. It is based off of the Pregel Paper by Grzegorz Malewicz, Matthew H. Austern, Aart J. C. Bik, James C. Dehnert, Ilan Horn, Naty Leiser, and Grzegorz Czajkowski.
+This repository contains the files for a distributed graph processing system created by Daniel McCormick. It is based off of the Pregel Paper by Grzegorz Malewicz, Matthew H. Austern, Aart J. C. Bik, James C. Dehnert, Ilan Horn, Naty Leiser, and Grzegorz Czajkowski.
 
 Paper here: https://kowshik.github.io/JPregel/pregel_paper.pdf
 
@@ -61,5 +61,32 @@ Sheet 1 should have the number of vertices in the graph in the top left cell. Ea
 
 Sheet 2 should have the number of edges in the graph in the top left cell. Each subsequent row should have the source of an edge in the first column and the destination in the second column. All graphs are assumed to be directed, so to make it undirected add one edge in each direction for each edge.
 
+# Suite of Algorithms that can be run on thi
+
+TO BE ADDED
+
 # Architecture:
 
+## Master
+
+There is a single master in charge of coordinating rounds. When the master starts up, it listens to the workers register themselves. From here, it listens to the loader which sends it vertices and edges. It distributes these across the registered workers. When it receives a "DONE" message from the loader, it starts the rounds.
+
+At the start of each round, the master sends a "start_round" message to all workers and waits for them to complete. When all workers say that they have completed the round, the master runs an aggregator function, and sends this result to all workers at the start of the next round. 
+
+Once all workers have marked themselves inactive, the master sends to all workers that the algorithm has terminated. It then runs its output function.
+
+## Worker
+
+Each worker begin by registering themselves with the master. It then receives a set of vertices and edges from the master and stores them. At the start of each round, each worker receives a "start_round" message and runs the compute function at each vertex. It sends the results of each compute function call to the master and waits for the master to respond. When the master says that the algorithm has terminated, each worker runs the output function at each vertex.
+
+## Loader
+
+The loader is responsible for reading in all vertices and edges from the excel document. It then simply sends these to the master. Once all vertices and edges have been sent, the loader terminates.
+
+## Network
+
+The network is responsible for all communication between vertices. It uses ZeroMQ pub-sub links, with each worker/master having a dedicated sub socket and all vertices communicating to that sub socket with an associated pub socket.
+
+## Fault Tolerance
+
+TO BE ADDED
