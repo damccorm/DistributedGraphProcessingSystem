@@ -63,7 +63,7 @@ class Network:
 		if self.is_master:
 			print "ERROR, tried to wait for master from master"
 			return
-		msg =  {"message_type": message_type, "contents": message_contents, "vertex_number": vertex_number, "ip_address", self.own_ip}
+		msg =  {"message_type": message_type, "contents": message_contents, "vertex_number": vertex_number, "ip_address": self.own_ip}
 		self.master_pub_socket.send_string("%s %s" % ("worker", json.dumps(msg, separators=(",",":"))))
 
 	def add_edge(self, outgoing_vertex, outgoing_ip):
