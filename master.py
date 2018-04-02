@@ -4,14 +4,14 @@ from network import Network, Message
 
 class Master:
 
-	def __init__(self, own_ip, aggregator_function = None, output_function = None):
+	def __init__(self, own_ip, aggregator_function = None, output_function = None, worker_timeout = 10):
 		if aggregator_function is None:
 			print "No aggregator function supplied"
 		if output_function is None:
 			print "No output function supplied"
 
 		self.num_vertices = 0
-		self.network = Network(own_ip, None)
+		self.network = Network(own_ip, None, worker_timeout)
 		self.load_data()
 		self.incoming_messages = []
 		self.round_number = 0
@@ -20,13 +20,18 @@ class Master:
 		aggregation_results = None
 		while not done:
 			self.start_round(aggregation_results)
-			if self.wait_for_round():
-				if aggregator_function != None:
-					incoming_messages = self.get_incoming_messages()
-					aggregation_results = aggregator_function(incoming_messages)
-					print "Aggregation Results:", aggregation_results
-			else:
-				done = True
+			try:
+				if self.wait_for_round():
+					if aggregator_function != None:
+						incoming_messages = self.get_incoming_messages()
+						aggregation_results = aggregator_function(incoming_messages)
+						print "Aggregation Results:", aggregation_results
+				else:
+					done = True
+			except:
+				# TODO: Fault recovery goes here
+				print "Worker died"
+				return
 		self.network.broadcast("master", None, "DONE")
 		if output_function is not None:
 			output_function(incoming_messages)

@@ -11,7 +11,7 @@ class Message:
 class Network:
         context = zmq.Context()
         
-	def __init__(self, ip_address, master_ip):
+	def __init__(self, ip_address, master_ip, worker_timeout = 3):
 		# Socket to receive all communications not from the master
 		self.not_master_sub_socket = self.context.socket(zmq.SUB)
 		self.not_master_sub_socket.bind("tcp://"+ip_address+":5555")
@@ -21,8 +21,8 @@ class Network:
 		#Sockets to send/receive all communications from the master
 		self.master_sub_socket = None
 		self.master_pub_socket = None
+		self.not_master_sub_socket.RCVTIMEO = worker_timeout
 		if master_ip is not None:
-                        self.not_master_sub_socket.RCVTIMEO = 3
 			self.is_master = False
 			self.master_pub_socket = self.context.socket(zmq.PUB)
 			self.master_pub_socket.connect("tcp://" + master_ip + ":5555")
@@ -32,6 +32,8 @@ class Network:
 		else:
 			# Make sure that master can listen for loading message as well as messages from workers
 			self.not_master_sub_socket.setsockopt_string(zmq.SUBSCRIBE, "loader".decode("ascii"))
+
+		self.own_ip = ip_address
 
     	# List to contain sockets for all outgoing edges
 		self.edges = []
@@ -61,7 +63,7 @@ class Network:
 		if self.is_master:
 			print "ERROR, tried to wait for master from master"
 			return
-		msg =  {"message_type": message_type, "contents": message_contents, "vertex_number": vertex_number}
+		msg =  {"message_type": message_type, "contents": message_contents, "vertex_number": vertex_number, "ip_address", self.own_ip}
 		self.master_pub_socket.send_string("%s %s" % ("worker", json.dumps(msg, separators=(",",":"))))
 
 	def add_edge(self, outgoing_vertex, outgoing_ip):
