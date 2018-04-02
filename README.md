@@ -12,6 +12,10 @@ This system is meant to be used for distributed graph processing. It follows the
 
 Each vertex also has a flag denoting whether or not it is active. At the end of each round, all vertices send their ids, whether they are active or inactive, and their values to the master. From here, the master checks if all vertices are inactive - if so, it terminates the algorithm. If not, it has the option of performing some aggregation function. It then sends the results of this aggregation function (or None if no aggregation function is provided) to the vertices, which starts the next round. Vertices can use the results of aggregation in their next round.
 
+# Requirements:
+
+In order to use this system, you must have Python 2 installed with the ZeroMQ and xldr packages installed.
+
 # Usage
 
 ## Vertex class
@@ -41,7 +45,7 @@ In order to use this project, only the first 3 files are of concern
 
 ### master.py
 
-To use the Master class from master.py, 3 arguments should be provided: the ip of the master, an aggregator function, and an output function. All communication is done through tcp, so the ip must be unique. If no aggregator function is provided, no aggregation will be done in between rounds. If one is provided, it must have the form of "lambda incoming_messages: aggregate(incoming_messages)", where incoming_messages are the messages from the vertices. Likewise, if an output function is not provided, nothing will be outputed. If one is, it should have the form of "lambda incoming_messages: aggregate(incoming_messages)", where incoming_messages are the messages from the vertices sent in the final round.
+To use the Master class from master.py, 4 arguments should be provided: the ip of the master, an aggregator function, an output function, and a worker timeout. All communication is done through tcp, so the ip must be unique. If no aggregator function is provided, no aggregation will be done in between rounds. If one is provided, it must have the form of "lambda incoming_messages: aggregate(incoming_messages)", where incoming_messages are the messages from the vertices. Likewise, if an output function is not provided, nothing will be outputed. If one is, it should have the form of "lambda incoming_messages: aggregate(incoming_messages)", where incoming_messages are the messages from the vertices sent in the final round. If a worker timeout is not provided, it will default to 10. The worker timeout is how long the master will wait for a worker before declaring that it has failed.
 
 __The master must be started before any other processes.__ Once it is started, it will run until the algorithm has been terminated.
 
@@ -61,9 +65,11 @@ Sheet 1 should have the number of vertices in the graph in the top left cell. Ea
 
 Sheet 2 should have the number of edges in the graph in the top left cell. Each subsequent row should have the source of an edge in the first column and the destination in the second column. All graphs are assumed to be directed, so to make it undirected add one edge in each direction for each edge.
 
-# Suite of Algorithms that can be run on thi
+# Suite of Algorithms that can be run on this system
 
-TO BE ADDED
+For simplicity's sake, this system includes implementations of several common algorithms. The supported algorithms are:
+
+* Single source shortest path - IN PROGRESS
 
 # Architecture:
 
@@ -89,4 +95,4 @@ The network is responsible for all communication between vertices. It uses ZeroM
 
 ## Fault Tolerance
 
-TO BE ADDED
+Currently this system will fail-stop on a single master or worker failure. In the future we plan to add support for worker failure.
