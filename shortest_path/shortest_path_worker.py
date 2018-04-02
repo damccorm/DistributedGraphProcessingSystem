@@ -1,5 +1,3 @@
-from .. import worker
-
 def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
 	# If largest value in existence, lock that in and stop sharing messages, otherwise, give yourself the smallest value of yourself/your neighbors
 	# To be overridden
@@ -25,7 +23,15 @@ def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
 def output_function(vertex):
 	print "Vertex", vertex.vertex_number, "finished with value", vertex.vertex_value
 
+
 if __name__ == '__main__':
+	if __package__ is None:
+        import sys
+        from os import path
+        sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
+        from Distributed-Graph-Processing-System.worker import Worker
+    else:
+        from ..Distributed-Graph-Processing-System.worker import Worker
 	master_ip_address = None
 	own_ip_address = "127.0.0.2"
 	if len(sys.argv) > 1:
