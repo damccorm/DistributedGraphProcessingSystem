@@ -63,13 +63,17 @@ To use the Loader class from loader.py, 2 arguments must be provided: the ip of 
 
 Sheet 1 should have the number of vertices in the graph in the top left cell. Each subsequent row in the first column should contain a unique vertex id, and each corresponding row in the second column should contain a value for that vertex.
 
-Sheet 2 should have the number of edges in the graph in the top left cell. Each subsequent row should have the source of an edge in the first column and the destination in the second column. All graphs are assumed to be directed, so to make it undirected add one edge in each direction for each edge.
+Sheet 2 should have the number of edges in the graph in the top left cell. Each subsequent row should have the source of an edge in the first column and the destination in the second column. All graphs are assumed to be unweighted and directed, so to make it undirected add one edge in each direction for each edge.
 
 # Suite of Algorithms that can be run on this system
 
-For simplicity's sake, this system includes implementations of several common algorithms. The supported algorithms are:
+For simplicity's sake, this system includes implementations of several common algorithms.
 
-* Single source shortest path - IN PROGRESS
+## Single source shortest path
+
+This takes in a graph and finds the shortest path from some source to all other vertices. It is contained in the shortest_path folder. In order to use it, set the source to the value of 0 and all other vertices to the value of -1 initially in your sheet.
+
+## MORE TO COME
 
 # Architecture:
 
