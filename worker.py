@@ -65,7 +65,10 @@ class Worker:
 
 		elif msg["message_type"] == "DONE":
 			if output_function is not None:
+				print ""
+				print "FINAL OUTPUT:"
 				for vertex in self.vertices.values():
+					print ""
 					self.output_function(vertex)
 			return True
 
