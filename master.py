@@ -68,9 +68,13 @@ class Master:
 		# Receive data from loader.py, balance vertices between machines, make sure they all receive vertices, then edges.
 		edge_index = 0
 		while True:
-			received_string = self.network.wait_for_worker()
-			topic, mjson = received_string.split()
-			msg = json.loads(mjson)
+                        try:
+			        received_string = self.network.wait_for_worker()
+			        topic, mjson = received_string.split()
+			        msg = json.loads(mjson)
+                        except:
+                                # If this doesn't succeed, probably just timed out
+                                topic = "TIMEOUT"
 			if topic == "worker":
 				worker_ip = msg["contents"]
 				print "Adding edge to worker with ip", worker_ip
@@ -92,7 +96,7 @@ class Master:
 					print "adding edge from", source, "to", destination
 					destination_ip = self.network.vertex_number_to_ip[destination]
 					self.network.send_to_worker(source, destination, destination_ip, "ADD_EDGE")
-				else:
+				elif topic != "TIMEOUT":
 					print "ERROR, trying to load something without vertex or edge identifier"
 
 def aggregate(incoming_messages):
