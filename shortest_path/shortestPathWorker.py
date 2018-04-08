@@ -1,12 +1,37 @@
-# NOTE: This doesn't do what it should yet.
+"""
+Worker node with purpose of computing the shortest path from a single source.
+The source should initially have a value of 0 and all other vertices should
+have values of -1. Each vertex will output the number of steps away it is and the
+vertices on that path.
+"""
 
 def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
-	# If largest value in existence, lock that in and stop sharing messages, otherwise, give yourself the smallest value of yourself/your neighbors
-	# To be overridden
-	return vertex, 0
+	if type(vertex.vertex_value) is not list:
+		# If not list, must be the first round
+		if vertex.vertex_value == -1:
+			vertex.vertex_value = []
+		else:
+			vertex.active = False
+			vertex.vertex_value = [vertex.vertex_number]
+			for v in vertex.outgoing_edges:
+				send_message_to_vertex(vertex, v, vertex.vertex_value)
+
+	if len(incoming_messages) > 1:
+		for message in incoming_messages:
+			if len(self.vertex_value) == 0 or len(message.contents) + 1 < len(self.vertex_value):
+				# If this is new shortest path, set it as such, broadcast that.
+				# Stay active so synchronizer doesn't terminate algorithm.
+				self.vertex_value = message.contents
+				self.vertex_value.append(vertex.vertex_number)
+				vertex.active = True
+				send_message_to_vertex(vertex, v, vertex.vertex_value)
+	else:
+		vertex.active = False		
+	return vertex, None
 
 def output_function(vertex):
-	print "Vertex", vertex.vertex_number, "finished with value", vertex.vertex_value
+	print "Vertex", vertex.vertex_number, "is", len(vertex.vertex_value), "steps away from the source"
+	print "The path from source to vertex", vertex.vertex_number, "is", vertex.vertex_value
 
 
 if __name__ == '__main__':

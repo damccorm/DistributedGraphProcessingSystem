@@ -1,7 +1,9 @@
-# NOTE: This doesn't do what it should yet.
-
-def aggregate(incoming_messages):
-	return 0
+"""
+Worker node with purpose of computing the shortest path from a single source.
+The source should initially have a value of 0 and all other vertices should
+have values of -1. Each vertex will output the number of steps away it is and the
+vertices on that path.
+"""
 
 if __name__ == '__main__':
 	if __package__ is None:
@@ -14,4 +16,4 @@ if __name__ == '__main__':
 	ip_address = "127.0.0.1"
 	if len(sys.argv) > 1:
 		ip_address = sys.argv[1]
-	master = Master(ip_address, lambda incoming_messages: aggregate(incoming_messages))
+	master = Master(ip_address)
