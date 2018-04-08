@@ -6,18 +6,17 @@ vertices on that path.
 """
 
 def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
-        print incoming_messages
-        vertex.active = False
+	vertex.active = False
 	if type(vertex.vertex_value) is not list:
 		# If not list, must be the first round
 		if vertex.vertex_value == -1:
 			vertex.vertex_value = []
 		else:
-                        vertex.active = True
+			vertex.active = True
 			vertex.vertex_value = [vertex.vertex_number]
 			for v in vertex.outgoing_edges:
 				send_message_to_vertex(vertex, v, vertex.vertex_value)
-	elif len(incoming_messages) > 0:
+	else:
 		for message in incoming_messages:
 			if len(vertex.vertex_value) == 0 or len(message.contents) + 1 < len(vertex.vertex_value):
 				# If this is new shortest path, set it as such, broadcast that.
@@ -25,10 +24,8 @@ def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
 				vertex.vertex_value = message.contents
 				vertex.vertex_value.append(vertex.vertex_number)
 				vertex.active = True
-                                for v in vertex.outgoing_edges:
-				        send_message_to_vertex(vertex, v, vertex.vertex_value)
-	else:
-		vertex.active = False		
+				for v in vertex.outgoing_edges:
+					send_message_to_vertex(vertex, v, vertex.vertex_value)	
 	return vertex, None
 
 def output_function(vertex):
