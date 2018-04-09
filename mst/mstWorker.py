@@ -46,7 +46,7 @@ def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
 		min_weight = vertex.vertex_value[0]
 	for value in vertex.vertex_value:
 		if value is not None and value < min_weight:
-
+			print "TODO - make algorithm more efficient by doing stuff here"
 	# Send aggregator info, it will choose smallest edge from smallest set
 	return vertex, json.dumps(vertex.vertex_value, separators=(",",":"))
 
