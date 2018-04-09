@@ -6,7 +6,7 @@ if __name__ == '__main__':
 		from loader import Loader
 	else:
 		from ..loader import Loader
-	excel_filename = "shortestPathLoader.xlsx"
+	excel_filename = "shortestPathGraph.xlsx"
 	if len(sys.argv) > 1:
 		master_ip_address = sys.argv[1]
 		loader = Loader(master_ip_address, excel_filename)
