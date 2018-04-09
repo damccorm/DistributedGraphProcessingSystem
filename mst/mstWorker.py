@@ -8,9 +8,9 @@ edge of weight 2 to vertex 3, it's value will initially be 3,2
 import json
 
 def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
-	if type(vertex.vertex_value) is not list:
+	if not isinstance(vertex.vertex_value, dict):
 		# If not list, must be the first round
-		edge_weights = [int(x) for x in vertex.vertex_value.split(",")]
+		edge_weights = [int(float(x)) for x in str(vertex.vertex_value).split(",")]
 		# Sort outgoing edges so they match weights.
 		# We'll just do bubble sort, not optimal obviously
 		for i in range(len(vertex.outgoing_edges)):
@@ -41,12 +41,14 @@ def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
 				vertex.vertex_value["added_edges"].append(to_be_added)
 
 	# Find minimal weight edge:
+        """
 	min_weight = None
 	if len(vertex.vertex_value) > 0:
 		min_weight = vertex.vertex_value[0]
 	for value in vertex.vertex_value:
 		if value is not None and value < min_weight:
 			print "TODO - make algorithm more efficient by doing stuff here"
+        """
 	# Send aggregator info, it will choose smallest edge from smallest set
 	return vertex, json.dumps(vertex.vertex_value, separators=(",",":"))
 
