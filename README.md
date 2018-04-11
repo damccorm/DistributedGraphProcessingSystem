@@ -65,7 +65,7 @@ Sheet 1 should have the number of vertices in the graph in the top left cell. Ea
 
 Sheet 2 should have the number of edges in the graph in the top left cell. Each subsequent row should have the source of an edge in the first column and the destination in the second column. All graphs are assumed to be unweighted and directed, so to make it undirected add one edge in each direction for each edge.
 
-# Suite of Algorithms that can be run on this system
+# Suite of Algorithms
 
 For simplicity's sake, this system includes implementations of several common algorithms.
 
@@ -81,7 +81,7 @@ This takes in a graph and finds a minimal spanning tree. It is contained in the 
 
 This takes in a graph and finds a topological sort of the graph. It is contained in the topological_sort folder. In order to use it, set the values of vertices to 0.
 
-## MORE TO COME
+## MORE ALGORITHMS TO COME
 
 # Architecture:
 
