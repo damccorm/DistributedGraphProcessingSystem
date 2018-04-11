@@ -7,29 +7,27 @@ def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
 	if isinstance(vertex.vertex_value, list):
 		# Still needs to be placed
 		if len(incoming_messages) == 0:
-                        print "NONE"
 			vertex.active = False
 		else:
-                        for i in incoming_messages:
-                                print i.sending_vertex
 			if len(incoming_messages) == vertex.vertex_value[1]:
 				# If it got the same number of messages last time, mark inactive since progress may not have been made
 				vertex.active = False
 			else:
 				vertex.active = True
 			vertex.vertex_value[0] = vertex.vertex_value[0] + 1
-			vertex.vertex_value[1] = len(incoming_messages)
 			for v in vertex.outgoing_edges:
 				send_message_to_vertex(vertex, v, "")
         else:
-                vertex.vertex_value = [1, -1]
-                for v in vertex.outgoing_edges:
-                        send_message_to_vertex(vertex, v, "")
+        	# Must be first pass
+        	vertex.vertex_value = [1, -1]
+        	for v in vertex.outgoing_edges:
+        		send_message_to_vertex(vertex, v, "")
+
+    vertex.vertex_value[1] = len(incoming_messages)
 	return vertex, None
 
 def output_function(vertex):
-        # TODO
-	if not isinstance(vertex.vertex_value, list):
+	if vertex.vertex_value[1] != 0:
 		print "Vertex", vertex.vertex_number, "could not be sorted, there must be a loop"
 	else:
 		print "Vertex", vertex.vertex_number, "was sorted into position", vertex.vertex_value[0]
