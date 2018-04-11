@@ -64,7 +64,7 @@ class Worker:
 			print "Added edge from", source, "to", destination
 
 		elif msg["message_type"] == "DONE":
-			if output_function is not None:
+			if self.output_function is not None:
 				print ""
 				print "FINAL OUTPUT:"
 				for vertex in self.vertices.values():
