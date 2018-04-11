@@ -8,6 +8,7 @@ def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
 		# Still needs to be placed
 		if len(incoming_messages) == 0:
 			vertex.active = False
+                        vertex.vertex_value[1] = 0
 		else:
 			if len(incoming_messages) == vertex.vertex_value[1]:
 				# If it got the same number of messages last time, mark inactive since progress may not have been made
@@ -17,13 +18,13 @@ def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
 			vertex.vertex_value[0] = vertex.vertex_value[0] + 1
 			for v in vertex.outgoing_edges:
 				send_message_to_vertex(vertex, v, "")
+                        vertex.vertex_value[1] = len(incoming_messages)
         else:
         	# Must be first pass
         	vertex.vertex_value = [1, -1]
         	for v in vertex.outgoing_edges:
         		send_message_to_vertex(vertex, v, "")
 
-    vertex.vertex_value[1] = len(incoming_messages)
 	return vertex, None
 
 def output_function(vertex):
