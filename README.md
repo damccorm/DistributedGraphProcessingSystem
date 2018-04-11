@@ -81,6 +81,10 @@ This takes in a graph and finds a minimal spanning tree. It is contained in the 
 
 This takes in a graph and finds a topological sort of the graph. It is contained in the topological_sort folder. In order to use it, set the values of vertices to 0.
 
+## 2 Coloring
+
+This takes in a graph and finds a 2 coloring of the graph if it exists. It is contained in the 2_coloring folder. In order to use it, set the values of vertices to 0.
+
 ## MORE ALGORITHMS TO COME
 
 # Architecture:

@@ -6,7 +6,6 @@ Each vertex should initially have 0 as its value
 import json
 
 def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
-        # TODO - need better way of detecting if graph is not 2-colorable - if at any point receive color identical to own, you know its not - maybe notify master at that point
 	if input_value is not None:
 		# No messages sent during the previous round
 		if int(input_value) == vertex.vertex_number:
