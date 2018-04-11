@@ -69,9 +69,13 @@ Sheet 2 should have the number of edges in the graph in the top left cell. Each 
 
 For simplicity's sake, this system includes implementations of several common algorithms.
 
-## Single source shortest path
+## Single Source Shortest Path
 
 This takes in a graph and finds the shortest path from some source to all other vertices. It is contained in the shortest_path folder. In order to use it, set the source to the value of 0 and all other vertices to the value of -1 initially in your sheet.
+
+## Minimal Spanning Tree
+
+This takes in a graph and finds a minimal spanning tree. It is contained in the mst folder. In order to use it, set the values of all vertices to the comma separated weights of their ages, sorted by the destination vertex number. For example, if a vertex has an edge to vertex 3 with weight 8, to vertex 4 with weight 2, and to vertex 5 with weight 7, its value would be "8,2,7" 
 
 ## MORE TO COME
 
