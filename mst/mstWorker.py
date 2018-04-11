@@ -54,7 +54,7 @@ def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
 
 def output_function(vertex):
 	# TODO
-	print "Vertex", vertex.vertex_number, "has value", vertex.vertex_value
+	print "Vertex", vertex.vertex_number, "has edges to the following vertices:", vertex.vertex_value["added_edges"]
 
 
 if __name__ == '__main__':

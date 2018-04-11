@@ -8,7 +8,6 @@ def aggregate(incoming_messages):
 	vertex_to_set_map = {}
 	min_set_number = None
 	for message in incoming_messages:
-                print message.contents
 		msg = json.loads(message.contents)
 		incoming_message_dictionaries.append(msg)
 		vertex_to_set_map[int(msg["vertex_number"])] = int(msg["set_number"])
