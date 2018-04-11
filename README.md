@@ -85,6 +85,10 @@ This takes in a graph and finds a topological sort of the graph. It is contained
 
 This takes in a graph and finds a 2 coloring of the graph if it exists. It is contained in the 2_coloring folder. In order to use it, set the values of vertices to 0.
 
+## PageRank
+
+This takes in a graph and finds the PageRank of all vertices. It is contained in the pagerank folder. In order to use it, set the values of vertices equal to the number of vertices in the graph.
+
 ## MORE ALGORITHMS TO COME
 
 # Architecture:
