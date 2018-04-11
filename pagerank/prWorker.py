@@ -5,14 +5,18 @@ Each vertex should initially have the number of vertices in the graph as its val
 
 
 def compute(vertex, input_value, round_number, incoming_messages, send_message_to_vertex):
+        vertex.vertex_value
 	if round_number == 1:
-		num_vertices_in_graph = float(vertex.value)
+		num_vertices_in_graph = float(vertex.vertex_value)
 		vertex.vertex_value = [1.0, num_vertices_in_graph]
 	else:
 		cur_sum = 0.0
 		for message in incoming_messages:
 			cur_sum += float(message.contents)
 		vertex.vertex_value[0] = (0.15/vertex.vertex_value[1]) + (0.85*cur_sum)
+        output_val = vertex.vertex_value[0]/float(len(vertex.outgoing_edges))
+        for v in vertex.outgoing_edges:
+                send_message_to_vertex(vertex, v, output_val)
 	if round_number == 50:
 		vertex.active = False
 	return vertex, None
