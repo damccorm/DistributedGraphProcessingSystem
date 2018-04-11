@@ -8,16 +8,21 @@ import json
 def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
         # TODO - need better way of detecting if graph is not 2-colorable - if at any point receive color identical to own, you know its not - maybe notify master at that point
 	if input_value is not None:
-		print "TODO - original color selection here"
-		# No messages sent last time
+		# No messages sent during the previous round
 		if int(input_value) == vertex.vertex_number:
                         vertex.active = False
 			vertex.vertex_value = 1
 			for v in vertex.outgoing_edges:
 				send_message_to_vertex(vertex, v, vertex.vertex_value)
 			return vertex, vertex.vertex_value
-	elif vertex.vertex_value is None or int(vertex.vertex_value) > 0:
-                print "value already set to", vertex.vertex_value
+	elif vertex.vertex_value is None:
+		return vertex, None
+	elif int(vertex.vertex_value) > 0:
+		for message in incoming_messages:
+			if message.contents is None:
+				vertex.vertex_value = None
+			elif int(message.contents) != int(vertex.vertex_value):
+				vertex.vertex_value = None
 		# Value has already been set
 		return vertex, None
 	else:

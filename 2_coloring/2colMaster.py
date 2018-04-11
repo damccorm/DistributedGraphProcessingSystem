@@ -13,6 +13,13 @@ def aggregate(incoming_messages):
 				return None
         return cur_return_val
 
+def output(incoming_messages):
+	for message in incoming_messages:
+		if message.contents is None or message.contents == "None":
+			print "Graph was not 2 colorable, results may be suspect"
+			return
+	print "Graph was 2 colorable"
+
 if __name__ == '__main__':
 	if __package__ is None:
 		import sys
