@@ -12,11 +12,7 @@ This system is meant to be used for distributed graph processing. It follows the
 
 Each vertex also has a flag denoting whether or not it is active. At the end of each round, all vertices send their ids, whether they are active or inactive, and their values to the master. From here, the master checks if all vertices are inactive - if so, it terminates the algorithm. If not, it has the option of performing some aggregation function. It then sends the results of this aggregation function (or None if no aggregation function is provided) to the vertices, which starts the next round. Vertices can use the results of aggregation in their next round.
 
-# Requirements:
-
-In order to use this system, you must have Python 2 installed with the ZeroMQ and xldr packages installed.
-
-# Usage
+# General Usage
 
 ## Vertex class
 
@@ -67,7 +63,7 @@ Sheet 2 should have the number of edges in the graph in the top left cell. Each 
 
 # Suite of Algorithms
 
-For simplicity's sake, this system includes implementations of several common algorithms.
+This system includes implementations of a suite of algorithms.
 
 ## Single Source Shortest Path
 
@@ -116,3 +112,7 @@ The network is responsible for all communication between vertices. It uses ZeroM
 ## Fault Tolerance
 
 Currently this system will stop making progress on a single master or worker failure. In the future we plan to add support for worker failure.
+
+# Requirements:
+
+In order to use this system, you must have Python 2 installed with the ZeroMQ and xldr packages installed.
