@@ -5,12 +5,13 @@ Each vertex should initially have 0 as its value
 def aggregate(incoming_messages):
 	cur_return_val = None
 	for message in incoming_messages:
+                print message.contents
 		if message.contents is not None and message.contents != "None":
-			if message.contents == 0:
+			if int(message.contents) == 0:
 				cur_return_val = message.sending_vertex
 			else:
 				return None
-
+        return cur_return_val
 
 if __name__ == '__main__':
 	if __package__ is None:
