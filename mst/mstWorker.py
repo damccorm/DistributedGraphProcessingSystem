@@ -40,15 +40,6 @@ def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
 			if to_be_added is not None:
 				vertex.vertex_value["added_edges"].append(to_be_added)
 
-	# Find minimal weight edge:
-        """
-	min_weight = None
-	if len(vertex.vertex_value) > 0:
-		min_weight = vertex.vertex_value[0]
-	for value in vertex.vertex_value:
-		if value is not None and value < min_weight:
-			print "TODO - make algorithm more efficient by doing stuff here"
-        """
 	# Send aggregator info, it will choose smallest edge from smallest set
 	return vertex, json.dumps(vertex.vertex_value, separators=(",",":"))
 
