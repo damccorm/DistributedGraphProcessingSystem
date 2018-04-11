@@ -27,7 +27,7 @@ def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
 		if input_value is None or input_value == "None":
 			vertex.active = False
 		else:
-			correct_vertex, correct_edge, set_number = [int(x) for x in input_value.split(",")]
+			correct_vertex, correct_edge, set_number = [int(float(x)) for x in input_value.split(",")]
 			to_be_added = None
 			if correct_vertex == vertex.vertex_number:
 				to_be_added = correct_edge

@@ -8,7 +8,8 @@ def aggregate(incoming_messages):
 	vertex_to_set_map = {}
 	min_set_number = None
 	for message in incoming_messages:
-		msg = json.loads(message)
+                print message.contents
+		msg = json.loads(message.contents)
 		incoming_message_dictionaries.append(msg)
 		vertex_to_set_map[int(msg["vertex_number"])] = int(msg["set_number"])
 		if min_set_number is None or min_set_number > int(msg["set_number"]):
@@ -27,7 +28,7 @@ def aggregate(incoming_messages):
 						# If this edge connects 2 different sets
 						min_weight = int(msg["edge_weights"][i])
 						correct_vertex = msg["vertex_number"]
-						correct_edge = msg["edge_weights"][i]
+						correct_edge = msg["all_edges"][i]
 
 	if correct_vertex is None:
 		return None
@@ -46,4 +47,4 @@ if __name__ == '__main__':
 	ip_address = "127.0.0.1"
 	if len(sys.argv) > 1:
 		ip_address = sys.argv[1]
-	master = Master(ip_address)
+	master = Master(ip_address, lambda incoming_messages: aggregate(incoming_messages))

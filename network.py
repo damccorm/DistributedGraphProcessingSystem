@@ -11,7 +11,7 @@ class Message:
 class Network:
         context = zmq.Context()
         
-	def __init__(self, ip_address, master_ip, worker_timeout = 3):
+	def __init__(self, ip_address, master_ip, worker_timeout = 30):
 		# Socket to receive all communications not from the master
 		self.not_master_sub_socket = self.context.socket(zmq.SUB)
 		self.not_master_sub_socket.bind("tcp://"+ip_address+":5555")
