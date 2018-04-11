@@ -77,6 +77,10 @@ This takes in a graph and finds the shortest path from some source to all other 
 
 This takes in a graph and finds a minimal spanning tree. It is contained in the mst folder. In order to use it, set the values of all vertices to the comma separated weights of their ages, sorted by the destination vertex number. For example, if a vertex has an edge to vertex 3 with weight 8, to vertex 4 with weight 2, and to vertex 5 with weight 7, its value would be "8,2,7" 
 
+## Topological Sort
+
+This takes in a graph and finds a topological sort of the graph. It is contained in the topological_sort folder. In order to use it, set the values of vertices to 0.
+
 ## MORE TO COME
 
 # Architecture:
