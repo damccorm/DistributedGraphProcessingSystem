@@ -19,10 +19,9 @@ def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
 		return vertex, None
 	elif int(vertex.vertex_value) > 0:
 		for message in incoming_messages:
-			if message.contents is None:
+			if message.contents is None or int(message.contents) != int(vertex.vertex_value):
 				vertex.vertex_value = None
-			elif int(message.contents) != int(vertex.vertex_value):
-				vertex.vertex_value = None
+                                return vertex, None
 		# Value has already been set
 		return vertex, None
 	else:
