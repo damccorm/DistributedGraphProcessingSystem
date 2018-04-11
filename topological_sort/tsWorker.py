@@ -4,14 +4,14 @@ Each vertex should initially have 0 as it's value.
 """
 
 def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
-	if int(vertex.vertex_value) == 0:
-		vertex.vertex_value = [1, -1]
-	elif isinstance(vertex.vertex_value, list):
+	if isinstance(vertex.vertex_value, list):
 		# Still needs to be placed
 		if len(incoming_messages) == 0:
+                        print "NONE"
 			vertex.active = False
-			vertex.vertex_value = vertex.vertex_value[0]
 		else:
+                        for i in incoming_messages:
+                                print i.sending_vertex
 			if len(incoming_messages) == vertex.vertex_value[1]:
 				# If it got the same number of messages last time, mark inactive since progress may not have been made
 				vertex.active = False
@@ -21,13 +21,18 @@ def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
 			vertex.vertex_value[1] = len(incoming_messages)
 			for v in vertex.outgoing_edges:
 				send_message_to_vertex(vertex, v, "")
-	return vertex, "TODO"
+        else:
+                vertex.vertex_value = [1, -1]
+                for v in vertex.outgoing_edges:
+                        send_message_to_vertex(vertex, v, "")
+	return vertex, None
 
 def output_function(vertex):
-	if isinstance(vertex.vertex_value, list):
+        # TODO
+	if not isinstance(vertex.vertex_value, list):
 		print "Vertex", vertex.vertex_number, "could not be sorted, there must be a loop"
 	else:
-		print "Vertex", vertex.vertex_number, "was sorted into position", vertex.vertex_value
+		print "Vertex", vertex.vertex_number, "was sorted into position", vertex.vertex_value[0]
 
 
 if __name__ == '__main__':
