@@ -7,7 +7,7 @@ edge of weight 2 to vertex 3, it's value will initially be 3,2
 
 import json
 
-def compute(vertex, input_value, incoming_messages, send_message_to_vertex):
+def compute(vertex, input_value, round_number, incoming_messages, send_message_to_vertex):
 	if not isinstance(vertex.vertex_value, dict):
 		# If not list, must be the first round
 		edge_weights = [int(float(x)) for x in str(vertex.vertex_value).split(",")]
@@ -62,7 +62,7 @@ if __name__ == '__main__':
 		master_ip_address = sys.argv[1]
 		if len(sys.argv) > 2:
 			own_ip_address = sys.argv[2]
-		compute_lambda = lambda vertex, input_value, incoming_messages, send_message_to_vertex: compute(vertex, input_value, incoming_messages, send_message_to_vertex)
+		compute_lambda = lambda vertex, input_value, round_number incoming_messages, send_message_to_vertex: compute(vertex, input_value, round_number, incoming_messages, send_message_to_vertex)
 		output_lambda = lambda vertex: output_function(vertex)
 		worker = Worker(master_ip_address, own_ip_address, compute_lambda, output_lambda)
 	else:
