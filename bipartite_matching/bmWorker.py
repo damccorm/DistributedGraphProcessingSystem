@@ -19,7 +19,7 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 				vertex.vertex_value[1] = incoming_messages[0].contents
 				vertex.active = False
 			else:
-				edge_index = (self.round_number-1)/2
+				edge_index = (round_number-1)/2
 				if edge_index >= len(vertex.outgoing_edges):
 					# We've tried all edges, give up
 					vertex.active = False
@@ -33,8 +33,8 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 			if len(incoming_messages) > 0:
 				matched_message = random.choice(incoming_messages)
 				vertex.vertex_value[1] = matched_message.contents
-				send_message_to_vertex(vertex, int(vertex.vertex_value[1]))
-    return vertex, None
+				send_message_to_vertex(vertex, int(vertex.vertex_value[1]), int(vertex.vertex_value[1]))
+        return vertex, None
 				
 
 def output_function(vertex):
