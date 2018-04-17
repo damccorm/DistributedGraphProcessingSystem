@@ -89,6 +89,10 @@ This takes in a graph and finds the PageRank of all vertices. It is contained in
 
 This takes in a graph and finds a maximal bipartite matching of the vertices. It is not guaranteed to be maximum and it assumes the graph is bipartite. It is contained in the bipartite_matching folder. In order to use it, set the values of vertices equal to the set that they are in (either 1 or 2).
 
+## Maximal Independent Set
+
+This takes in a graph and finds a maximal independent set. It is not guaranteed to be maximum. It is contained in the independent_set folder. In oreder to use it, set the values of the vertices equal to 0.
+
 # Architecture:
 
 ## Master
