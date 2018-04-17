@@ -87,7 +87,7 @@ This takes in a graph and finds the PageRank of all vertices. It is contained in
 
 ## Maximal Bipartite Matching
 
-This takes in a graph and finds a maximal bipartite matching of the vertices. It is not guaranteed to be maximum and it assumes the graph is bipartite. In order to use it, set the values of vertices equal to the set that they are in (either 1 or 2).
+This takes in a graph and finds a maximal bipartite matching of the vertices. It is not guaranteed to be maximum and it assumes the graph is bipartite. It is contained in the bipartite_matching folder. In order to use it, set the values of vertices equal to the set that they are in (either 1 or 2).
 
 # Architecture:
 
