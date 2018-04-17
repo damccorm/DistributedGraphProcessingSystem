@@ -24,7 +24,7 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 				
 
 def output_function(vertex):
-	if vertex.value == 1:
+	if vertex.vertex_value == 1:
 		print "Vertex", vertex.vertex_number, "is part of the independent set"
 	else:
 		print "Vertex", vertex.vertex_number, "is not part of the independent set"
