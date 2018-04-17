@@ -85,7 +85,9 @@ This takes in a graph and finds a 2 coloring of the graph if it exists. It is co
 
 This takes in a graph and finds the PageRank of all vertices. It is contained in the pagerank folder. In order to use it, set the values of vertices equal to the number of vertices in the graph.
 
-## MORE ALGORITHMS TO COME
+## Maximal Bipartite Matching
+
+This takes in a graph and finds a maximal bipartite matching of the vertices. It is not guaranteed to be maximum and it assumes the graph is bipartite. In order to use it, set the values of vertices equal to the set that they are in (either 1 or 2).
 
 # Architecture:
 

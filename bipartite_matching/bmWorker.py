@@ -38,7 +38,6 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 				
 
 def output_function(vertex):
-	# TODO
 	print "Vertex", vertex.vertex_number, "has been matched with", vertex.vertex_value[1]
 
 
