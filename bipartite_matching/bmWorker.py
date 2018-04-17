@@ -33,7 +33,7 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 			if len(incoming_messages) > 0:
 				matched_message = random.choice(incoming_messages)
 				vertex.vertex_value[1] = matched_message.contents
-				send_message_to_vertex(vertex, int(vertex.vertex_value[1]), int(vertex.vertex_value[1]))
+				send_message_to_vertex(vertex, int(vertex.vertex_value[1]), vertex.vertex_number)
         return vertex, None
 				
 
