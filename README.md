@@ -121,7 +121,7 @@ The network is responsible for all communication between vertices. It uses ZeroM
 
 ## Fault Tolerance
 
-Currently this system will stop making progress on a single master or worker failure. In the future we plan to add support for worker failure.
+Currently this system will stop making progress on a single master or worker failure. In the future I plan to add support for worker failure.
 
 # Requirements:
 
