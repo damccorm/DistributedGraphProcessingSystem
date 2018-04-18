@@ -11,7 +11,9 @@ import json
 
 def compute(vertex, input_value, round_number, incoming_messages, send_message_to_vertex):
 	if round_number == 1:
-		edge_weights = [int(float(x)) for x in str(vertex.vertex_value).split(",")]
+                edge_weights = []
+                if len(str(vertex.vertex_value)) > 0:
+		        edge_weights = [int(float(x)) for x in str(vertex.vertex_value).split(",")]
 		# Sort outgoing edges so they match weights.
 		# We'll just do bubble sort, not optimal obviously
 		for i in range(len(vertex.outgoing_edges)):
@@ -35,13 +37,16 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 		# {path: set of all vertices on path, flow: max flow that can be sent on path}
 		msg = json.loads(input_value)
 		path = msg["path"]
-		if vertex.vertex_number in path:
+		if str(vertex.vertex_number) in path:
 			flow = int(msg["flow"])
 			for i in range(len(vertex.outgoing_edges)):
-				if vertex.outgoing_edges[i] in path and vertex.vertex_value["edge_capacities"][i] > 0:
+                                print str(int(vertex.outgoing_edges[i]))
+				if str(int(vertex.outgoing_edges[i])) in path and vertex.vertex_value["edge_capacities"][i] > 0:
+                                        print "TEST"
 					# This is the correct edge in the path
-					vertex.vertex_value["edge_capacities"][i] -= flow
-					vertex.vertex_value["edge_flows"][i] += flow
+					vertex.vertex_value["edge_capacities"][i] -= int(flow)
+					vertex.vertex_value["edge_flows"][i] += int(flow)
+                        print vertex.vertex_value
 		vertex.active = True
 
 	if input_value is not None or round_number == 1:
