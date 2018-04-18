@@ -40,13 +40,10 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 		if str(vertex.vertex_number) in path:
 			flow = int(msg["flow"])
 			for i in range(len(vertex.outgoing_edges)):
-                                print str(int(vertex.outgoing_edges[i]))
 				if str(int(vertex.outgoing_edges[i])) in path and vertex.vertex_value["edge_capacities"][i] > 0:
-                                        print "TEST"
 					# This is the correct edge in the path
 					vertex.vertex_value["edge_capacities"][i] -= int(flow)
 					vertex.vertex_value["edge_flows"][i] += int(flow)
-                        print vertex.vertex_value
 		vertex.active = True
 
 	if input_value is not None or round_number == 1:
@@ -82,9 +79,11 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 	return vertex, None
 
 def output_function(vertex):
-	# TODO
-	print "Vertex", vertex.vertex_number, "has the following value:", vertex.vertex_value
-
+	output_string = "Vertex " + vertex.vertex_number + " has flows to the following vertices - "
+	for i in range(len(vertex.outgoing_edges)):
+		if vertex.vertex_value["edge_flows"][i] > 0:
+			output_string += vertex.outgoing_edges[i] + ":" + vertex.vertex_value["edge_flows"] + "   "
+	print output_string
 
 if __name__ == '__main__':
 	if __package__ is None:
