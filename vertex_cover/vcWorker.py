@@ -4,10 +4,9 @@ Each vertex should initially have 0 as its value.
 """
 
 def compute(vertex, input_value, round_number, incoming_messages, send_message_to_vertex):
-        if round_number == 1:
-                return vertex, vertex.vertex_number
-	if vertex.active:
-                print round_number
+	if round_number == 1:
+		return vertex, vertex.vertex_number
+	if vertex.active:=
 		if round_number % 3 == 1 and vertex.vertex_value == -1:
 			vertex.active = False
 			if len(incoming_messages) > 0:
