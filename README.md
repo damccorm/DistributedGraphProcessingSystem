@@ -91,7 +91,11 @@ This takes in a graph and finds a maximal bipartite matching of the vertices. It
 
 ## Maximal Independent Set
 
-This takes in a graph and finds a maximal independent set. It is not guaranteed to be maximum. It is contained in the independent_set folder. In oreder to use it, set the values of the vertices equal to 0.
+This takes in a graph and finds a maximal independent set. It is not guaranteed to be maximum. It is contained in the independent_set folder. In order to use it, set the values of the vertices equal to 0.
+
+## Vertex Cover 2-approximation
+
+This takes in a graph and finds a 2-approximation vertex cover. It is contained in the vertex_cover folder. In order to use it, set the values of the vertices equal to 0.
 
 # Architecture:
 
