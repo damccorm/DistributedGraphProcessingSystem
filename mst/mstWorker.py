@@ -44,7 +44,6 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 	return vertex, json.dumps(vertex.vertex_value, separators=(",",":"))
 
 def output_function(vertex):
-	# TODO
 	print "Vertex", vertex.vertex_number, "has edges to the following vertices:", vertex.vertex_value["added_edges"]
 
 
