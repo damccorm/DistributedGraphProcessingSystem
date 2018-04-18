@@ -79,10 +79,10 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 	return vertex, None
 
 def output_function(vertex):
-	output_string = "Vertex " + vertex.vertex_number + " has flows to the following vertices - "
+	output_string = "Vertex " + str(vertex.vertex_number) + " has flows to the following vertices (formatted as vertex: flow) - "
 	for i in range(len(vertex.outgoing_edges)):
 		if vertex.vertex_value["edge_flows"][i] > 0:
-			output_string += vertex.outgoing_edges[i] + ":" + vertex.vertex_value["edge_flows"] + "   "
+			output_string += str(int(vertex.outgoing_edges[i])) + ": " + str(vertex.vertex_value["edge_flows"][i]) + "   "
 	print output_string
 
 if __name__ == '__main__':
