@@ -4,13 +4,16 @@ Each vertex should initially have 0 as its value.
 """
 
 def compute(vertex, input_value, round_number, incoming_messages, send_message_to_vertex):
-	if vertex.active and round_number != 1:
-		if round_number % 2 == 1 and vertex.vertex_value == -1:
+        if round_number == 1:
+                return vertex, vertex.vertex_number
+	if vertex.active:
+                print round_number
+		if round_number % 3 == 1 and vertex.vertex_value == -1:
 			vertex.active = False
 			if len(incoming_messages) > 0:
 				vertex.vertex_value = 1
 				send_message_to_vertex(vertex, int(incoming_messages[0].sending_vertex), "ADD")
-		elif round_number%2 == 2:
+		elif round_number%3 == 2:
 			if len(incoming_messages) > 0:
 				vertex.vertex_value = 1
 				vertex.active = False
@@ -25,13 +28,14 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 				send_message_to_vertex(vertex, int(incoming_messages[0].sending_vertex), "MAYBE_ADD")
 	else:
 		return vertex, None
-			
 	return vertex, vertex.vertex_number
 				
 
 def output_function(vertex):
-	# TODO
-	print "Vertex", vertex.vertex_number, "has a value of", vertex.vertex_value
+	if vertex.vertex_value == 1:
+	        print "Vertex", vertex.vertex_number, "is part of the cover"
+        else:
+                print "Vertex", vertex.vertex_number, "is not part of the cover"
 
 
 if __name__ == '__main__':
