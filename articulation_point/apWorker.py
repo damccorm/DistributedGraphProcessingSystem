@@ -18,10 +18,8 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 		else:
 			vertex.active = False
 	elif len(incoming_messages) > 0:
-		vertex.active = True
 		for message in incoming_messages:
 			msg = json.loads(message.contents)
-                        print msg
 			if msg["root"] == vertex.vertex_number:
 				# Don't forward, just check if it has 2 children in tree
                                 vertex.active = False
@@ -36,7 +34,6 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 				for v in vertex.outgoing_edges:
 					if not sent_on and v not in msg["dfs"]:
 						send_message_to_vertex(vertex, v, json.dumps(msg, separators=(",",":")))
-						print v, "TEST1"
 						sent_on = True
 				if not sent_on:
 					# Climb back on up tree
@@ -48,10 +45,7 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 							if int(msg["dfs"][cur_index]) == int(v):
 								send_message_to_vertex(vertex, v, json.dumps(msg, separators=(",",":")))
 								parent_found = True
-								print v, "TEST2"
 						cur_index -= 1
-	else:
-	        print vertex.vertex_value
 	return vertex, None
 
 def output_function(vertex):
