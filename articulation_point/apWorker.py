@@ -41,14 +41,15 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 				if not sent_on:
 					# Climb back on up tree
 					cur_dfs_num = msg["dfs"].index(vertex.vertex_number)
-					parent_index = -1
+					parent_found = False
 					cur_index = cur_dfs_num - 1
-					while cur_index >= 0:
+					while cur_index >= 0 and not parent_found:
+						for v in vertex.outgoing_edges:
+							if int(msg["dfs"][cur_index]) == int(v)
 						if int(msg["dfs"][parent_index]) in vertex.outgoing_edges and parent_index == -1:
-							parent_index = cur_index
-                                                cur_index -= 1
-					send_message_to_vertex(vertex, int(msg["dfs"][parent_index]), json.dumps(msg, separators=(",",":")))
-                                        print parent_index, "TEST2"
+							send_message_to_vertex(vertex, v, json.dumps(msg, separators=(",",":")))
+							parent_found = True
+                            print v, "TEST2"
 	else:
 	        print vertex.vertex_value
 	return vertex, None
