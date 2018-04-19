@@ -1,6 +1,7 @@
 """
 Worker node with purpose of computing a topoplogical sort.
 Each vertex should initially have 0 as it's value.
+All code created by Daniel McCormick.
 """
 
 def compute(vertex, input_value, round_number, incoming_messages, send_message_to_vertex):

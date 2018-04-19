@@ -1,3 +1,9 @@
+"""
+Loader node with purpose of computing a maximal bipartite matching.
+Each vertex should initially have 1 or 2 as its value depending on which bipartite set its in.
+All code created by Daniel McCormick.
+"""
+
 if __name__ == '__main__':
 	if __package__ is None:
 		import sys

@@ -1,3 +1,7 @@
+"""
+This file contains the implementation for a master node of a distributed graph processing system.
+All code created by Daniel McCormick.
+"""
 import json
 import sys
 from network import Network, Message

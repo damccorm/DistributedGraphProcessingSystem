@@ -1,3 +1,9 @@
+"""
+Loader node with purpose of computing the 2 coloring.
+Each vertex should initially have 0 as its value.
+All code created by Daniel McCormick.
+"""
+
 if __name__ == '__main__':
 	if __package__ is None:
 		import sys

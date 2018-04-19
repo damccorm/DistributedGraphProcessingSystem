@@ -1,6 +1,7 @@
 """
 Worker node with purpose of computing a maximal independent set.
 Each vertex should initially have 0 as its value.
+All code created by Daniel McCormick.
 """
 
 def compute(vertex, input_value, round_number, incoming_messages, send_message_to_vertex):

@@ -5,6 +5,7 @@ vertex number) as it's value. So if a vertex has an edge of weight 3 to vertex 1
 edge of weight 2 to vertex 3, it's value will initially be 3,2.
 If the vertex is the source, it should have a value of -1 appended to the end of this, if
 it is the destination it should have a value of -2 appended to the end of this.
+All code created by Daniel McCormick.
 """
 
 import json

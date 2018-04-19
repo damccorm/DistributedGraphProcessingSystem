@@ -1,5 +1,6 @@
 """
 Master node with purpose of computing the shortest path from a single source.
+All code created by Daniel McCormick.
 """
 import json
 

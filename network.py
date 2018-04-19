@@ -1,3 +1,7 @@
+"""
+This file contains the implementation for the network a distributed graph processing system.
+All code created by Daniel McCormick.
+"""
 import json
 import time
 import zmq

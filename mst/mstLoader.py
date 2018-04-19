@@ -1,3 +1,7 @@
+"""
+Loader node with purpose of computing the shortest path from a single source.
+All code created by Daniel McCormick.
+"""
 if __name__ == '__main__':
 	if __package__ is None:
 		import sys

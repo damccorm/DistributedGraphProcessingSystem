@@ -1,6 +1,7 @@
 """
 Worker node with purpose of computing the 2 coloring.
-Each vertex should initially have 0 as its value
+Each vertex should initially have 0 as its value.
+All code created by Daniel McCormick.
 """
 
 import json

@@ -2,7 +2,8 @@
 Worker node with purpose of computing the minimum spanning tree.
 Each vertex should initially have the comma seperated weights of its edges (sorted by 
 vertex number) as it's value. So if a vertex has an edge of weight 3 to vertex 1 and an
-edge of weight 2 to vertex 3, it's value will initially be 3,2
+edge of weight 2 to vertex 3, it's value will initially be 3,2.
+All code created by Daniel McCormick.
 """
 
 import json

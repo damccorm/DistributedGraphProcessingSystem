@@ -1,6 +1,7 @@
 """
 Master node with purpose of computing a 2x approximation vertex cover.
 Each vertex should initially have 0 as its value.
+All code created by Daniel McCormick.
 """
 
 def aggregate(incoming_messages):

@@ -3,6 +3,7 @@ Worker node with purpose of computing the shortest path from a single source.
 The source should initially have a value of 0 and all other vertices should
 have values of -1. Each vertex will output the number of steps away it is and the
 vertices on that path.
+All code created by Daniel McCormick.
 """
 
 def compute(vertex, input_value, round_number, incoming_messages, send_message_to_vertex):

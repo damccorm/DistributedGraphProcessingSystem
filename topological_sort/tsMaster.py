@@ -1,6 +1,7 @@
 """
 Master node with purpose of computing a topoplogical sort.
 Each vertex should initially have 0 as it's value.
+All code created by Daniel McCormick.
 """
 
 

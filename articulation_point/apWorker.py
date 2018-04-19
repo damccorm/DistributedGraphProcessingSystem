@@ -2,6 +2,7 @@
 Master node with purpose of finding an articulation point.
 Each vertex should initially have 0 as it's value.
 Assumes an undirected graph.
+All code created by Daniel McCormick.
 """
 
 import json

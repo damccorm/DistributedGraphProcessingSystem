@@ -1,3 +1,7 @@
+"""
+This file contains the implementation for a graph loader of a distributed graph processing system.
+All code created by Daniel McCormick.
+"""
 import json
 import sys
 import zmq

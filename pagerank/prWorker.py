@@ -1,6 +1,7 @@
 """
 Worker node with purpose of computing the pagerank.
-Each vertex should initially have the number of vertices in the graph as its value
+Each vertex should initially have the number of vertices in the graph as its value.
+All code created by Daniel McCormick.
 """
 
 
