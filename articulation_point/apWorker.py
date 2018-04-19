@@ -45,11 +45,11 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 					cur_index = cur_dfs_num - 1
 					while cur_index >= 0 and not parent_found:
 						for v in vertex.outgoing_edges:
-							if int(msg["dfs"][cur_index]) == int(v)
-						if int(msg["dfs"][parent_index]) in vertex.outgoing_edges and parent_index == -1:
-							send_message_to_vertex(vertex, v, json.dumps(msg, separators=(",",":")))
-							parent_found = True
-                            print v, "TEST2"
+							if int(msg["dfs"][cur_index]) == int(v):
+								if int(msg["dfs"][parent_index]) in vertex.outgoing_edges:
+									send_message_to_vertex(vertex, v, json.dumps(msg, separators=(",",":")))
+									parent_found = True
+                        		    print v, "TEST2"
 	else:
 	        print vertex.vertex_value
 	return vertex, None
