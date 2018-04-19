@@ -2,6 +2,8 @@ This repository contains the files for a distributed graph processing system cre
 
 Paper here: https://kowshik.github.io/JPregel/pregel_paper.pdf
 
+All code located here: https://github.com/dannymccormick3/DistributedGraphProcessingSystem
+
 # Overview:
 
 This system is meant to be used for distributed graph processing. It follows the model described in Pregel: there are many workers and a single master. Each vertex is placed on one of the workers. From here, the computation is divided into rounds. During each round, each vertex can do 1 of 3 things:
