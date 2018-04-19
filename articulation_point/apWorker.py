@@ -22,7 +22,7 @@ def compute(vertex, input_value, round_number, incoming_messages, send_message_t
 			msg = json.loads(message.contents)
 			if msg["root"] == vertex.vertex_number:
 				# Don't forward, just check if it has 2 children in tree
-                                vertex.active = False
+				vertex.active = False
 				for i in range(1, len(vertex.outgoing_edges)):
 					if vertex.outgoing_edges[i] not in msg["dfs"]:
 						vertex.vertex_value = True

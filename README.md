@@ -101,6 +101,10 @@ This takes in a graph and finds a 2-approximation vertex cover. It is contained 
 
 This takes in a graph and finds the max flow of the graph. It is contained in the max_flow folder. In order to use it, set the values of all vertices to the comma separated weights of their ages, sorted by the destination vertex number. For example, if a vertex has an edge to vertex 3 with weight 8, to vertex 4 with weight 2, and to vertex 5 with weight 7, its value would be "8,2,7". In addition, for the source vertex add a value of -1 to the end of the value (e.g. "8,2,7,-1"). For the destination vertex add a value of -2 to the end of the value.
 
+## Articulation point detection
+
+This takes in a graph and finds all articulation points. It is contained in the articulation_point folder. In order to use it, set the values of the vertices equal to 0.
+
 # Architecture:
 
 ## Master
